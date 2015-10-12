@@ -1,0 +1,17 @@
+<apex:page standardController="Organization__c" extensions="CtrParentOrganization">
+      <apex:form >
+	      <apex:sectionHeader title="ParentOrganization"/>
+	      <apex:pageBlock >
+	        <apex:pageBlockTable value="{!Organization__c}" var="org" rendered="{!IF(Organization__c.ParentOrganization__c != null,true,false)}">	        	
+	        	<apex:column >
+	        		<apex:commandLink value="Edit" action="/{!org.ParentOrganization__c}/e?retURL=%2F{!org.Id}"/>
+	        	</apex:column>       
+	            <apex:column value="{!org.ParentOrganization__c}"/>
+	            <apex:column value="{!org.ParentOrganization__r.Name}"/>		            	            
+	        </apex:pageBlockTable>
+	        <apex:outputPanel rendered="{!IF(Organization__c.ParentOrganization__c == null,true,false)}">
+	        	<apex:outputText value="No records to display"/>
+	        </apex:outputPanel>	        
+	      </apex:pageBlock>
+      </apex:form>
+</apex:page>

@@ -1,0 +1,33 @@
+<!--
+@Company: YOUR SL  
+@Author: K. Verheyden
+@Creation date: 14.04.2015  
+@Ref: xxxxxxx
+--> 
+<apex:page showHeader="true" sidebar="true" controller="CtrGenerateKeyForUSer">
+    <apex:sectionHeader title="MyHeaderTitle" subtitle="MyHeaderSubTitle" />
+    <apex:form id="myForm">
+        <apex:pageMessages />
+        <apex:pageBlock title="MyPageBlockTitle">
+
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Create Key for this user" action="{!generateKeyForUser}" reRender="myForm"/>
+                <apex:commandButton value="cancel" />
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection title="MyPageBlockSectionTitle">
+                
+                    <apex:inputField value="{!userKey.User__c}" />
+                    <apex:inputField value="{!userKey.publicKey__c}" />
+                    <apex:inputText value="{!userKey.deploymentData__c}" />
+                    <apex:pageBlockSectionItem >
+                    AppSetting
+                    <apex:selectList value="{!selectedAppSettingId}" multiselect="false" size="1">
+                         <apex:selectOptions value="{!appSettingvalues}"/>
+                    </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                    
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

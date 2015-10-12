@@ -1,0 +1,24 @@
+<apex:page controller="CtrlPictureOfSuccess" showHeader="false">
+<apex:form >
+<apex:pageBlock >
+
+<apex:actionFunction name="GetPos" action="{!GetPosrec}" reRender="out"/>
+<apex:selectList size="1" value="{!selectAppseting}" onchange="GetPos()">
+<apex:selectOptions value="{!AppsettingList}">
+</apex:selectOptions>
+</apex:selectList><br/><br/>
+<apex:commandButton value="New PictureOfSuccess"/>
+
+<apex:outputPanel id="out">
+<apex:dataTable value="{!ListofPictureOfSuccess}" var="Picture"><br/><br/><br/>
+<apex:column headerValue="PictureOfSuccessList">
+<apex:commandButton value="{!Picture.Name}"/>
+</apex:column>
+</apex:dataTable>
+</apex:outputPanel>
+
+
+</apex:pageBlock>
+</apex:form>
+ 
+</apex:page>

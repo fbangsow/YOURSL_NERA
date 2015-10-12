@@ -1,0 +1,46 @@
+<apex:page standardStylesheets="false" sidebar="false">
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<apex:includeScript value="{!URLFOR($Resource.StreamingApiScripts,'StreamingApiScripts/jquery-1.5.1.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.StreamingApiScripts,'StreamingApiScripts/json2.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.StreamingApiScripts,'StreamingApiScripts/Cometd.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.StreamingApiScripts,'StreamingApiScripts/jquery.cometd.js')}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <link rel="stylesheet"  href="{!$Resource.AppmonitoringTool}"></link>
+
+<script type="text/javascript">  
+   var j = jQuery.noConflict();
+  (function(j) {
+      j(document).ready(function() {
+          // Connect to the CometD endpoint
+          $.cometd.init({
+              url: window.location.protocol + '//' + window.location.hostname + '/cometd/23.0/',
+              requestHeaders: {
+                  Authorization: 'OAuth {!$Api.Session_ID}'
+              }
+          });
+          // Subscribe to a topic. JSON-encoded update will be returned
+          // in the callback
+          $.cometd.subscribe('/topic/AppErrorLog', function(message) {
+
+
+              //$(".datatoappend")
+              angular.element(document.getElementById("datatoappend")).prepend("<tr><td>" + message.data.sobject.AppVersion__c + "</td><td>" + message.data.sobject.DeviceId__c + "</td><td>" + message.data.sobject.DeviceOs__c + "</td><td>" + message.data.sobject.ExceptionId__c + "</td><td>" + message.data.sobject.Id + "</td></tr>");
+          })
+      })
+  })(j)
+    </script>   <!-- Begin Default Content REMOVE THIS -->
+ </head>
+ <body>
+ <div class="hrading"><span>App Monitoring Tool</span></div>
+ <div class="scrolldiv">
+ <table cellspacing="0" cellpapdding="0" class="dataappend">
+ <thead ><tr><td>AppVersion</td><td>DeviceId</td><td>DeviceOs</td><td>ExceptionId</td><td>UserId</td></tr></thead>
+ <tbody id="datatoappend"> </tbody>
+ </table>
+ </div>
+ </body>
+ </html>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

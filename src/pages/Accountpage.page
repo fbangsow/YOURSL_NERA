@@ -1,0 +1,28 @@
+<apex:page standardController="Account" showHeader="true" sidebar="true" extensions="EctrAccountRelatedOrganization" >
+
+
+
+ <apex:form >
+ <apex:sectionHeader title="ParentOrganization"/>
+   <apex:pageBlock >  
+   
+       <apex:pageBlockTable value="{!listorg}"  var="org" rendered="{!listorg.size>0}"> 
+<apex:column >
+    <apex:commandLink value="Edit" action="/{!org.id}/e?retURL=%2F{!orgId}"/>|
+    
+    
+</apex:column>
+ <apex:column value="{!org.Name}" / >
+  <apex:column value="{!org.ParentOrganization__c}" / >
+ <apex:column value="{!org.OwnerId}" / >
+ 
+
+    </apex:pageBlockTable>
+               <apex:outputPanel rendered="{!listorg.size==0}">
+                <apex:outputText value="No records to display"/>
+               </apex:outputPanel>
+  </apex:pageBlock>
+ 
+
+ </apex:form>
+</apex:page>

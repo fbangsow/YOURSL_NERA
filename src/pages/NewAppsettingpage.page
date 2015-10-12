@@ -1,0 +1,8 @@
+<apex:page controller="NewAppSettingscontroller">
+ <apex:form >
+ <apex:pageBlock title="New Appseting">
+ 
+ 
+ </apex:pageBlock>
+ </apex:form>
+</apex:page>

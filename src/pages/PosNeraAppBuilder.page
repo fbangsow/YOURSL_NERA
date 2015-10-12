@@ -1,0 +1,1737 @@
+<!--
+@Company: YOUR SL   
+@Author: Sunny AND Ravi
+@Creation date:  
+@Ref:POSNERAAPPBuilder
+-->
+<apex:page showHeader="false" controller="CtrlPOSAppBuilder" standardStylesheets="false">
+<html ng-app="myapp" class="backcolor">
+<head>
+<style type="text/css">
+.tooltipvalue
+{
+width:30px;height:30px;top:-43px;background-image: url('https://c.eu5.visual.force.com/resource/1442063537000/Slider');background-position: 100% 100%;background-size: 100% 100%;position:relative;
+    color: white;
+    text-align: center;
+}
+    .background {
+        background-image: url({!$Resource.Settingsimage});
+        background-repeat: no-repeat;
+        background-size: 31px;
+        background-position-x: 15px;
+        background-position-y: 12px;
+    }
+    .backgroundFile {
+        background-image: url({!$Resource.File});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 9px;
+        background-position-y: 9px;
+    }
+    .btn.backgroundfilter {
+        background-image: url({!$Resource.Filter});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 9px;
+        background-position-y: 9px;     
+    } 
+    
+    .backgroundDragdrop {
+        !background-image: url({!$Resource.Dragdrop});
+        background-repeat: no-repeat;
+        background-size: 31px;
+        background-position-x: 7px;
+        background-position-y: 6px;
+    }
+    .backgroundAddView {
+        background-image: url({!$Resource.AddView});
+        background-repeat: no-repeat;
+        background-size: 17px;
+        background-position-x: 0px;
+        background-position-y: 1px;
+    }
+    .btn.backgroundAddnew {
+        background-image: url({!$Resource.AddView});
+        background-repeat: no-repeat;
+        background-size: 23px;
+        background-position-x: 1px;
+        background-position-y: 5px;
+
+    }
+    .btn.backgroundsave {
+        background-image: url({!$Resource.Save});
+        background-repeat: no-repeat;
+        background-size: 18px;
+        background-position-x: 20px;
+        background-position-y: 7px;
+
+    }
+    .glyphicon.backgroundsave {
+        background-image: url({!$Resource.Save});
+        background-repeat: no-repeat;
+        background-size: 18px;
+        background-position-x: 3px;
+        background-position-y: 8px;
+
+    }
+    .btn.backgroundtrash {
+        background-image: url({!$Resource.Trash});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 6px;
+        background-position-y: 6px;
+
+    }
+    .btn.backgroundtrashmain {
+        background-image: url({!$Resource.Trash});
+        background-repeat: no-repeat;
+        background-size: 21px;
+        background-position-x: 23px;
+        background-position-y: 5px;
+
+    }
+    .btn.backgroundedit {
+        background-image: url({!$Resource.Edit});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 6px;
+        background-position-y: 6px;
+
+    }
+    .btn.backgroundcancel {
+        background-image: url({!$Resource.Cancel});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 6px;
+        background-position-y: 6px;
+
+    }
+    .btn.backgroundsavepopup {
+        background-image: url({!$Resource.Save});
+        background-repeat: no-repeat;
+        background-size: 15px;
+        background-position-x: 6px;
+        background-position-y: 6px;
+
+    }
+    .backgroundCheckboxcheckmarker {
+        background:#34495E url({!$Resource.Checkboxcheckmarker});
+        background-repeat: no-repeat;
+        background-size: 20px;
+        background-position-x: 3px;
+        background-position-y: 2px;
+    }
+    .backgroundslider {
+        !background-image: url({!$Resource.Slider});
+        !background-repeat: no-repeat;
+        !background-size: 15px;
+        !background-position-x: 6px;
+        !background-position-y: 6px;
+
+    }
+
+  input[type="range"]{
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 6px;
+    height: 2px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0.15, #C5C5C5),
+        color-stop(0.15, #C5C5C5)
+    );
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background-color: #E9E9E9;
+    border: 1px solid #CECECE;
+    height: 15px;
+    width: 15px;myfilter
+}
+.hdndivfortab
+{
+
+    width:10%;
+    height:10%;
+    border:1px solid blue;
+}
+body
+{
+
+    height:100%;
+}
+.hghtfrcal
+{
+
+    height:6%;
+    width:100%;
+
+}
+.imgdata1,.imgdata5
+{
+background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0px !important;
+    width: 79.2%;
+    height: 80%;
+    top: 10%;
+    position: absolute;
+    left: 10.4%;
+
+}
+.imgdata5
+{
+background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0px !important;
+    width: 79.2%;
+    height: 100%;
+    top: 10%;
+    position: absolute;
+    left: 10.4%;
+
+}
+.imgdata2
+{
+background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 0px !important;
+
+    height: 93%;
+
+    position: absolute;
+
+
+        width: 87%;
+    left: 6.5%;
+    top: 7%;
+
+}
+    .rspnbndng
+{
+    
+    !width:10.5% !important;
+}
+</style>
+</head>
+<body ng-controller="mycntrlr" id="bdyid">
+
+    <div class="modal fade" id="myModal" role="dialog" ng-style="popupclose">
+        <div class="modal-dialog modaldialog">
+            <div class="modal-content" >
+                <div class="modal-header popupheader">
+                    <button class="btn filtercls backgroundfilter" ng-click="openfilter()"><span>Filter</span></button>
+                    <button type="button" class="close " data-dismiss="modal" ng-click="close()"><img src="{!$Resource.Closebutton}" style="width: 1.2em;" /></button>
+                    <h4 class="paneltitle popuptitle paneltitleview dscrptnpoi" style="display:none;">{{desciptionofpoi}}</h4>
+                    <h4 class="paneltitle popuptitle paneltitleview newpoiinteresetheader"  style="display:none;">New Point of Interest</h4>
+                </div>
+                <div class="modal-body modalbody">
+                    <div class="col-sm-5 colsm5">
+                        <div class="input-group">
+                            <input type="text" class="form-control formcontrol poitype poitypeid" aria-label="..." placeholder="Poi type" value="{{AuditQuestions.POIType__r.Name}}" id="{{AuditQuestions.POIType__r.Id}}"/>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right minwidthpoi" >
+                                    <li ng-repeat="c in poitype" ng-model="Name" ng-click="clickforpoitype($event)" id="{{c.Id}}">{{c.Name}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="Title" class="mrgn10  form-control formcontrol titlevalue" ng-model="title"/>
+                        <div class="bootstrap-filestyle input-group mrgn10 " >
+                            <input type="text" class="form-control wdthbrdrrdus1 formcontrol textareaheader" disabled="" placeholder="Select icon" ng-model="dataicon.name"/>
+                            <span class="btn btn-default btn-file glyphicon glyphicon-folder-open hgtmrgn">
+                            <a href="#" ></a>
+                            <input type='file' onchange="angular.element(this).scope().imageUploadforicon(this)" class="btn btn-info btn-lg" >
+                            </input>
+                            </span>
+                        </div>
+                        <div class="bootstrap-filestyle input-group mrgn10  ">
+                            <input type="text" class="form-control wdthbrdrrdus1 formcontrol txtxareaiamges" disabled="" placeholder="Select images" ng-model="datas.name"/>
+                            <span class="btn btn-default btn-file glyphicon glyphicon-folder-open hgtmrgn">
+                            <a href="#" ></a>
+                            <input type='file' onchange="angular.element(this).scope().imageUploadforimageicon (this)" class="btn btn-info btn-lg" >
+                            </input>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-7" ng-show="AuditQuestions.POIHeaders__r.records==undefined" >
+                       <!-- <textarea class="form-control textarea" rows="6" placeholder="Type your Description here">
+                        </textarea> -->
+                    <textarea class="form-control textarea textid1" rows="6" placeholder="Type your Description here" ng-model="description"></textarea>
+                    </div>
+
+                    <div class="col-sm-7" ng-show="AuditQuestions.POIHeaders__r.records!=undefined" ng-repeat="datatoloop in AuditQuestions.POIHeaders__r.records">
+                        <textarea class="form-control textarea textid" rows="6" placeholder="Type your Description here" ng-model="description" value="{{datatoloop.Description__c}}" id="{{datatoloop.Id}}" ></textarea>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="popupbottm" ng-show="tablehide">
+                    <div class="popupdasheddiv scrollbar" id="style-1">
+                        <div ng-model="Scrollarea" class="tablemargin">
+                            <table class="table table-bordered table-condensed header-fixed tablestyle">
+                                <thead style="background-color: #e5e5e5;">
+                                    <tr>
+                                        <th class="col-md-3 thstyle colmd3"><span class="tabletitle">Question Type</span></th>
+                                        <th class="col-md-3 thstyle"><span class="tabletitle">Question</span></th>
+                                        <th class="col-md-3 thstyle"><span class="tabletitle">Potential</span></th>
+                                        <th class="col-md-1 thstyle colmd2"><span class="tabletitle">Mandatory</span></th>
+                                        <th class="col-md-2 thstyle colmd2"><span class="tabletitle">         </span></th>
+                                    </tr>
+                                </thead>
+                                <tbody  id="tablerow" >
+                                    <tr ng-repeat="datatoloop in AuditQuestions.POIQuestions__r.records" class="trclass">
+                                        <td id="{{datatoloop.Id}}" class="poiquestionid">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control formcontrol qustiontypeid questype" aria-label="..." placeholder=""  value="{{datatoloop.AuditQuestion__r.AuditQuestionType__r.Name}}" id="{{datatoloop.AuditQuestion__r.AuditQuestionType__c}}" disabled="true" ng-change="questiontypechange()" ng-model="questionmodel"/>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown poitypehide" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled="true"><span class="caret"></span></button>
+                                                    <ul class="dropdown-menu dropdown-menu-right minwidth" >
+                                                        <li ng-repeat="c in qustntype" ng-model="Name" ng-click="clickforqutntype($event)" id="{{c.Id}}">{{c.Name}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td >
+                                            <div >
+                                                <input type="text"  placeholder="text text question" class="mrgn10  form-control margininput formcontrol questionid questionhide"  value="{{datatoloop.AuditQuestion__r.Description__c}}"  id="{{datatoloop.AuditQuestion__c}}" disabled="true"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{datatoloop.AuditQuestion__r.Potential__c}}" placeholder="" class="mrgn10  form-control margininput formcontrol potentialhide potentialval" disabled="true"/>
+                                        </td>
+                                        <td>
+                                            <div class="mandatorybutt" ng-show="datatoloop.IsMandatory__c==true"><input type="checkbox" class="checkboxmandatory backgroundCheckboxcheckmarker" checked="true"/></div>
+                                            <div class="mandatorybutt" ng-show="datatoloop.IsMandatory__c==false"><input type="checkbox" class="checkboxmandatory backgroundCheckboxcheckmarker" checked=""/></div>
+                                        </td>
+                                        <td>
+                                            <div style="float:right;">
+                                                <button class="btn btn-default butcoloredit backgroundedit" data-title="Edit" data-toggle="modal" data-target="#edit" ng-click="editfunction($event);">
+                                                <span class=""></span>
+                                                </button>
+                                            </div>
+                                            <div style="float:left;">
+                                            <button class="btn btn-default butcolordelete backgroundtrash" data-title="Delete" data-toggle="modal" data-target="#delete" ng-click="removeRow($event)">
+                                                
+                                                <span class=""></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button ng-click="add()" class="btn backgroundAddnew addbutton" disabled="true"> &nbsp;&nbsp;&nbsp;&nbsp;Add new</button>
+                </div>
+                <div class="modal-footer brdertopnne">
+                    <button type="button" class="btn backgroundtrashmain deletepop" ng-click="delpoi()">&nbsp;&nbsp;&nbsp;&nbsp;delete</button>
+                    <button type="button" class="btn savepop backgroundsave backgroundsave1" ng-click="savenewpoi($event)"> &nbsp;&nbsp;&nbsp;save point of Interest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-content" id="myfilter" role="dialog" ng-style="popupclose">
+        <div class="modal-header popupheader" >
+            <h4 class="paneltitle popupdescription paneltitleview" >Description</h4>
+        </div>
+        <div  >
+            <table class="table table-bordered tablestyle checkedvalue" template="{{bbprocess}}" compile-data="X" ></table>
+            <button type="button" class="btn cancelbutt" ng-click="cancelfilter()">Cancel</button>
+            <button type="button" class="btn savepop backgroundsave backgroundsave1" ng-click="saveposmember()"> &nbsp;&nbsp;&nbsp;save</button>
+        </div>
+    </div>
+            <nav class="main-nav rspnbndng" id="main-nav" template="{{btninpt}}" compile-data="X">
+    </nav>
+    <div class="page-wrap">
+        <div >
+            <div >
+                <div >
+                    <div class="col-md-9 colpadd" >
+                        <div class="panel panel-info panel-border toppanel">
+                            <div class="panel-heading">
+                                <header class="main-header">
+                                    <a href="#main-nav" class="open-menu removeline">
+                                    ☰
+                                    </a>
+                                    <a href="#" class="close-menu removeline">
+                                    ☰
+                                    </a>
+                                </header>
+                                <span class="paneltitle paneltitlepopup">Create new View</span>
+                                <div class="widget-menu pull-right">
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+
+                            <img src="" style="width: 100%;" class="imagefortablet"/>
+                                   
+                                <div class="hgtfordiv" >
+                                    <div  ng-style="devicebackgroundimg" class="devicesize" id="div1" ondrop="drop(event)"  ondragover="allowDrop(event)">
+                                          <div class="imgdata1 dspnne" ><div class="hghtfrcal" ></div></div>        
+                                       <div class='imgdata5 dspnne' ><div class='hghtfrcal' ></div></div>
+                                        <div  ng-style="backgrundimgdata" class="imgdata" template="{{pageconuicontrollersion}}" compile-data="X">
+
+                                            <div class="dragdown angdradrst circleBase type1" id="drag1" src="img_logo.gif" ng-draggable='dragOptions' >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" brdr rspnbndng1" ng-show="leftdivshow">
+                        <div class="panel panel-info panel-border toppanel mrgnbtm bottomnone">
+                            <div class="panel-heading">
+                                <span class="paneltitle">Select device</span>
+                                <div class="widget-menu pull-right">
+                                </div>
+                            </div>
+                            <div class="panel-body selectdevice">
+                                <div class="input-group">
+                                    <input type="text" class="form-control formcontrol" aria-label="..." ng-model="selectdevicename" placeholder="Select device"/>
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                                        <ul class="dropdown-menu dropdown-menu-right minwidthpos" template="{{mobiledevice}}" compile-data="X">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="uploaddivshowandhide" class="hidden-sm">
+                            <div class="panel panel-info panel-border toppanel mrgnbtm">
+                                <div class="panel-heading">
+                                    <span class="paneltitle">Survey Execution</span>
+                                    <div class="widget-menu pull-right">
+                                        <div class="onoffswitch">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true"/>
+                                            <label class="onoffswitch-label" for="myonoffswitch">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="textbox" class="mrgn10  form-control formcontrol" ng-model="pageconName" placeholder="Name" required="true"/>
+                                    <div class="bootstrap-filestyle input-group">
+                                        <input type="text" class="form-control formcontrol wdthbrdrrdus" disabled="" placeholder="Select Background" ng-model="data.name"/>
+                                        <span class="btn btn-default btn-file glyphicon glyphicon-folder-open hgtmrgn">
+                                        <a href="#" ></a>
+                                        <input type='file' required="true" onchange="angular.element(this).scope().imageUpload(this)" class="btn btn-info btn-lg uploadimg" >
+                                        </input>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info panel-border toppanel mrgnbtm">
+                                <div class="panel-heading hdngbrdr" style="border-top: 1px solid #999999 !important;border-bottom: 1px solid rgba(153, 153, 153, 0.52) !important;">
+                                    <span class="paneltitle">Point of Interest</span>
+                                    <div class="widget-menu pull-right">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="dragdown backgroundDragdrop" id="drag1" src="img_logo.gif" ondragstart="drag(event)" box-creator="true">
+                                        <img src="{!$Resource.Dragdrop}" class="imgforscrl"/>
+                                        <p class="Dradanddrop" >Drag &amp; Drop a new<br/><small style="margin-left: -32px;"  class="smalldrag">point of interest</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info panel-border toppanel heightpoi mrgnbtm">
+                                <div class="panel-heading hdngbrdr" style="border-top: 1px solid #999999 !important;border-bottom: 1px solid rgba(153, 153, 153, 0.52) !important;">
+                                    <span class="paneltitle">View all Point of Interest</span>
+                                </div>
+                                <div class="widget-menu scrollbar heightview" template="{{pageconuicontrollers}}" compile-data="X" id="style-3">
+                                    <div class="force-overflow">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info panel-border toppanel saveview mrgnbtm">
+                                <button type="button" class="btn backgroundsave savepos" ng-click="savenewpos()"> &nbsp;&nbsp;&nbsp;save the new View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+ <script>
+ var dataofdevices = "";
+
+ function htmlDecode(value) {
+     if (value) {
+         return $('<div />').html(value).text();
+     } else {
+         return '';
+     }
+ }
+ var myapp = angular.module("myapp", []);
+ myapp.directive('ngmouseleave',
+     function() {
+         return {
+             link: function(scope, element, attrs) {
+                 element.parent().bind('mouseenter', function() {
+                     element.show();
+                 });
+                 element.parent().bind('mouseleave', function() {
+                     element.hide();
+                 });
+             }
+         };
+     });
+
+ myapp.directive('compileData', function($compile) {
+     return {
+         scope: true,
+         replace: true,
+         link: function(scope, element, attrs) {
+             var elmnt;
+             attrs.$observe('template', function(myTemplate) {
+                 if (angular.isDefined(myTemplate)) {
+                     elmnt = $compile(myTemplate)(scope);
+                     element.html("");
+                     element.append(elmnt);
+                 }
+             });
+         }
+     };
+ });
+
+ myapp.directive("boxCreator", function($document, $compile) {
+     return {
+         restrict: 'A',
+         link: function($scope, $element, $attrs) {
+             $element.bind("mousedown", function($event) {
+                 var newNode = $compile("<div class='circleBase type1 removediv' ng-Draggable='dragOptions'></div>")($scope);
+
+                 newNode.css({
+                     top: $event.pageY - 25 + "px",
+                     left: $event.pageX - 25 + "px",
+
+                     cursor: 'pointer'
+
+                 });
+                 angular.element($document[0].body).append(newNode);
+                 angular.element(newNode).triggerHandler('mousedown', ["test"]);
+             });
+         }
+     }
+ });
+
+ var uicoordinates = [];
+ var xcoordinate;
+ var ycoordinate;
+ var gblfrdata=0;
+
+ myapp.directive('ngDraggable', function($document, $compile) {
+     return {
+         restrict: '',
+         scope: {
+             dragOptions: '=ngDraggable'
+         },
+         link: function(scope, elem, attr) {
+
+             $(elem).draggable(scope.dragOptions);
+
+             elem.css({
+                 position: 'absolute',
+                 cursor: 'pointer'
+             });
+
+             var startX = 0,
+                 startY = 0,
+                 x = event.pageX + "px",
+                 y = event.pageY + "px";
+
+             elem.on('mousedown', function(event) {
+                 event.preventDefault();
+                 startX = (event.pageX - x) || 0;
+                 startY = (event.pageY - y) || 0;
+                 $document.on('mousemove', mousemove);
+                 $document.on('mouseup', mouseup);
+             });
+
+             function mousemove(event) {
+
+                 y = event.pageY - startY;
+                 x = event.pageX - startX;
+
+             }
+
+             function mouseup(event) {
+
+                 elem.css({
+                     top: y + 'px',
+                     left: x + 'px'
+                 });
+
+                 y = event.pageY - startY;
+                 x = event.pageX - startX;
+
+                 xcoordinate = x;
+                 ycoordinate = y;
+
+                 var offsetvalx = $(".imgdata").offset().left;
+                 var offsetvaly = $(".imgdata").offset().top;
+
+                 xcoordinate = xcoordinate - offsetvalx;
+                 ycoordinate = ycoordinate - offsetvaly;
+
+                 $document.off('mousemove', mousemove);
+                 $document.off('mouseup', mouseup);
+                 $("#myModal").attr("style", "display:block;padding-right:11%;margin-top:6%;color: rgb(153, 153, 153);position:absolute;");
+                 $("#myModal").addClass("in");
+                 $(".angdradrst").css("display", "block");
+                 backgroundsave1=1;
+
+         angular.element(document.getElementsByClassName("dscrptnpoi")).attr("style","display:none");
+         angular.element(document.getElementsByClassName("newpoiinteresetheader")).attr("style","display:block;");
+                 angular.element(document.getElementsByClassName("tablecol")).remove();
+                 angular.element(document.getElementById("qustionid")).val("");
+                 angular.element(document.getElementById("potentialid")).val("");
+                 angular.element(document.getElementsByClassName("titlevalue")).val("");
+                 angular.element(document.getElementsByClassName("poitype")).val("");
+                 angular.element(document.getElementsByClassName("wdthbrdrrdus1")).val("");
+                 angular.element(document.getElementsByClassName("trclass")).remove();
+                 angular.element(document.getElementsByClassName("textarea")).val("");
+                 angular.element(document.getElementsByClassName("backgroundsave1")).attr("id", null);
+                 angular.element(document.getElementsByClassName("backgroundAddnew")).attr("disabled",true);
+                 angular.element(document.getElementsByClassName("backgroundfilter")).attr("disabled",true);
+             }
+
+         }
+     }
+ });
+
+ myapp.factory('Mobiledeviceservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getMobileDeviceList}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         var a = JSON.parse(resultdata);
+                         dataofdevices = a;
+                         angular.forEach(a, function(key, value) {
+                           data = data + "<li ng-click='selectdevice($event)' id='" + key.Id + "'>" + key.Name + "</li>";
+                         });
+                         deferred.resolve(data);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('poiquestionservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function(poiid) {
+
+         var deferred = $q.defer();
+
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getPOIQuestions}', poiid,
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var resultdata = htmlDecode(result);
+                         glbldatapoi = JSON.parse(resultdata);
+                         deferred.resolve(glbldatapoi);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('businessprocessservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+
+         var deferred = $q.defer();
+
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getBProcessParameters}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldatapoi = JSON.parse(resultdata);
+
+                         angular.forEach(glbldatapoi[0].BusinessProcessParameters__r.records, function(value, key) {
+
+                             data = data + "<tr><td class='bprocessclass'> " + value.Name + "</td><td style='width:14%;'><div class='checkboxdiv'><input type='checkbox'  class='bprocessval'/></div></td></tr>";
+                         });
+                         deferred.resolve(data);
+
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('AuditQuestionTypeservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getAuditQuestionTypeList}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldataauditque = JSON.parse(resultdata);
+                         deferred.resolve(glbldataauditque);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('getPOITypeListservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getPOITypeList}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldatapoitype = JSON.parse(resultdata);
+                         deferred.resolve(glbldatapoitype);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('getPOITypeattnameservice', ['$q', '$rootScope', function($q, $rootScope) {
+     return function(poitypeid) {
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getPOITypeListattname}', poitypeid,
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldatapoitype = JSON.parse(resultdata);
+                         deferred.resolve(glbldatapoitype);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('pageconfiguiconservice', ['$q', '$rootScope', function($q, $rootScope, $Scope) {
+     return function(pageConfigID) {
+
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getpageconfigUIcon}', pageConfigID,
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldatapagecon = JSON.parse(resultdata);
+                         angular.forEach(glbldatapagecon.UIControls__r.records, function(value, key) {
+                             var dateceated = value.CreatedDate;
+                             datecreated = dateceated.replace(/[-,:\s]/g, ".");
+                             datecreated = datecreated.match(/.{1,10}/g);
+                             var datePart = datecreated[0].match(/\d+/g);
+                             var year = datePart[0].substring();
+                             var month = datePart[1];
+                             var day = datePart[2];
+
+                             var dateformate = day + '.' + month + '.' + year;
+
+
+                             data = data + "<div class='navbar-default navbar-brand backgroundFile' id='" + value.Id + "' value='" + value.Name + "' ng-click='bindingpoi($event)'>" + value.Name + "<br/><small>" + dateformate + " - " + value.CreatedBy.Name + "</small><div class='checkbox2'></div></div>";
+                             });
+
+
+
+                         deferred.resolve(data);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ myapp.factory('pageconfiguiconiconservice', ['$q', '$rootScope', function($q, $rootScope, $Scope, $compile) {
+     return function(pageConfigID) {
+
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getpageconfigUIcon}', pageConfigID,
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var data = "";
+                         var resultdata = htmlDecode(result);
+                         glbldatapageconicon = JSON.parse(resultdata);
+                      
+                         data="<div class='imgdata2' style='width:87%;left:6.5%;top:7%;' ng-style='backgrundimgdata'></div><div style='border:1px solid #43424E;width:6.5%;height:100%;background-color:#43424E;' class='leftbar'></div><div style='position:absolute;top:0px;left:0px;border:1px solid #2699D8;width:100%;height:7%;background-color:#2699D8;'></div><div style='position:absolute;top:0px;right:0px;border:1px solid #43424E;width:6.5%;height:100%;background-color:#43424E'></div>";
+                         angular.forEach(glbldatapageconicon.UIControls__r.records, function(value, key) {
+                             var dateceated = value.CreatedDate;
+                             datecreated = dateceated.replace(/[-,:\s]/g, ".");
+                             datecreated = datecreated.match(/.{1,10}/g);
+                                    var hght=$(".imgdata").height();
+    var wdth1=$(".imgdata").width();
+
+     scalewidt=wdth1/1024;
+    scalehght=hght/768;
+      var xcordinatebndg=value.XCoordinate__c*scalewidt;
+          var  ycordinatebndg=value.YCoordinate__c*scalehght;
+         var wdth=68*scalewidt;
+         var hght=68*scalehght;
+
+                             data = data + "<div ng-click='bindingpoi($event)'><div style='position:absolute; background-image : url(/servlet/servlet.FileDownload?file=" + value.PoiIconImageId__c + "); background-repeat: no-repeat; background-size: 100% 100%; left:" + xcordinatebndg + "px;top:" +ycordinatebndg  + "px;width:"+wdth+"px;height:"+hght+"px;' class='circleBase type1'  id=" + value.Id + " value='" + value.Name + "' ng-Draggable='dragOptions' ng-mouseleave='uiconxycoor($event)'></div></div>";
+
+                         });
+                           data=data+"";
+                         deferred.resolve(data);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+ myapp.factory('poiHeaderServies', ['$q', '$rootScope', function($q, $rootScope) {
+     return function(uicontrollid) {
+
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getpoiheaderattIcon}',uicontrollid,
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var dataforresult = "";
+                         var resultdata = htmlDecode(result);
+                       dataforresult= JSON.parse(resultdata);
+                         deferred.resolve(dataforresult);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+
+ var uicontroltid;
+  myapp.factory('uicontroltypeid', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getUicontroltypeid}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var resultdata = htmlDecode(result);
+                       dataforresult = JSON.parse(resultdata);
+                       uicontroltid = dataforresult[0].Id;
+                         deferred.resolve(dataforresult);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
+ 
+
+        var PageConfigTypeId;
+ myapp.factory('serviceforgetaccountchange', ['$q', '$rootScope', function($q, $rootScope) {
+     return function(appsettingid) {
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getPosList}', appsettingid, function(result, event) {
+             $rootScope.$apply(function() {
+                 if (event.status) {
+                     var data = "<div class='panel-heading panel-border background settingimage'><span class='paneltitle title colortitle'>Survey Execution<br/><small class='colortitle'>Builder 1.0 </small></span><div class='widget-menu pull-right'></div></div>";
+                     data = data + "<div class='panel newpos'><div class='panel-heading'><i ng-click='uploaddivshow()' class='raduisbtn  backgroundAddView '></i><span class='paneltitle paneltitleview'>New View</span></div></div>";
+                     var resultdata = htmlDecode(result);
+                     var a = JSON.parse(resultdata);
+                     data = data + "<div class='panel panel-info panel-border brdernone'  style='margin-bottom:0px;'><div class='panel-heading bordernne' ><span class='paneltitle'>See all Views</span><div class='widget-menu pull-right'></div></div></div>";
+                     angular.forEach(a, function(key1, value1) {
+                         if (typeof key1.PageConfigs__r !== "undefined") {
+                             angular.forEach(key1.PageConfigs__r.records, function(key, value) {
+                                 PageConfigTypeId = key.PageConfigTypeId__c;
+                                 var dateceated = key.CreatedDate;
+                                 datecreated = dateceated.replace(/[-,:\s]/g, ".");
+                                 datecreated = datecreated.match(/.{1,10}/g);
+
+                                 var datePart = datecreated[0].match(/\d+/g);
+                                 var year = datePart[0].substring();
+                                 var month = datePart[1];
+                                 var day = datePart[2];
+
+                                 var dateformate = day + '.' + month + '.' + year;
+
+                                 data = data + "<div class='navbar-default navbar-brand backgroundFile' id='" + key.AttachmentId__c + "/" + key.Id + "'' value='" + key.Name + "' ng-click='bindingimage($event)' ng-model='pageConfigID' ng-style='" + key.Id + "' >" + key.Name + "<br/><small>" + dateformate + " - " + key.CreatedBy.Name + "</small><div class='checkbox1'></div></div></br>";
+                             });
+                         } else {
+
+                             data = "<div class='panel-heading panel-border background settingimage'><span class='paneltitle title colortitle'>Survey Execution<br/><small class='colortitle'>Builder 1.0 </small></span><div class='widget-menu pull-right'></div></div><div class='panel newpos'><div class='panel-heading'><i ng-click='uploaddivshow()' class='raduisbtn  backgroundAddView '></i><span class='paneltitle paneltitleview'>New View</span></div></div><div class='panel panel-info panel-border brdernone'  style='margin-bottom:0px;'><div class='panel-heading bordernne' ><span class='paneltitle'>See all Views</span><div class='widget-menu pull-right'></div></div></div>";
+                         }
+                     });
+
+                     deferred.resolve(data);
+                 } else {
+                     deferred.reject(event);
+                 }
+             });
+         }, {
+             buffer: true,
+             escape: true,
+             timeout: 30000
+         });
+         return deferred.promise;
+     }
+ }]);
+
+var scalewidt=0;
+var scalehght=0;
+ myapp.controller("mycntrlr", function($scope, $compile, serviceforgetaccountchange, Mobiledeviceservice, poiquestionservice, pageconfiguiconservice, AuditQuestionTypeservice, pageconfiguiconiconservice, getPOITypeListservice, getPOITypeattnameservice, businessprocessservice,poiHeaderServies,uicontroltypeid) {
+    $scope.disablenew=0;
+ 
+     $scope.btninpt = " <div class='panel-heading panel-border background settingimage'><span class='paneltitle title colortitle'>Survey Execution<br/><small class='colortitle'>Builder 1.0 </small></span><div class='widget-menu pull-right'></div></div><div class='panel newpos'><div class='panel-heading'><i ng-click='uploaddivshow()' class='raduisbtn  backgroundAddView '></i><span class='paneltitle paneltitleview'>New View</span></div></div><div class='panel panel-info panel-border brdernone'  style='margin-bottom:0px;'><div class='panel-heading bordernne' ><span class='paneltitle'>See all Views</span><div class='widget-menu pull-right'></div></div></div>";
+     $scope.questiotype = function(a) {}
+     $scope.dragOptions = {
+         containment: $(".imgdata")
+     };
+     $scope.questiontypechange = function() {
+
+     }
+     $scope.mobiledevice = Mobiledeviceservice();
+     $scope.qustntype = AuditQuestionTypeservice();
+     $scope.poitype = getPOITypeListservice();
+
+     $scope.tablehide = true;
+     $scope.leftdivshow = true;
+     $scope.add = function() {
+         var svg = angular.element(document.getElementById("tablerow"));
+         var trdata = angular.element("<tr class='tablecol'><td><div class='input-group'><input type='text'  class='form-control formcontrol questype innquestionhide' ng-model='questiontypesave' /><div class='input-group-btn'><button type='button' class='btn btn-lg btn-primary dropdown-toggle dropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right minwidth' ><li ng-repeat='c in qustntype' ng-model='Name' ng-click='clickforqutntype($event)' id='{{c.Id}}'>{{c.Name}}</li></ul></div></div></td><td><input type='text' value='' placeholder='text text question' class='mrgn10  form-control formcontrol margininput innerinputhide' id='qustionid'></td><td><input type='text' value='' placeholder='' class='mrgn10  form-control formcontrol margininput innerpothide' id='potentialid'></td><td><div class='mandatorybutt'><input type='checkbox' class='checkboxmandatory backgroundCheckboxcheckmarker' /></div></td><td><div style='float:right;'><button class='btn btn-default btn-lg butcolorsave backgroundcancel' data-title='Delete' data-toggle='modal' style='color: #999999 !important;' data-target='#delete' ng-click='removeRow($index)' ></button></div><div style='float:left;'><div style='float:left;'><button class='btn btn-default btn-lg butcoloredit backgroundsavepopup' data-title='save' data-toggle='modal' data-target='#save' ng-click='questuiontypesave($event)'></button></div><div class='clearfix'></div></td></tr>")
+         svg.append(trdata);
+         $compile(trdata)($scope);
+
+     };
+
+     $scope.questuiontypesave = function(element) {
+
+         $scope.questionsave = angular.element(event.target).parent().parent().parent().parent().find('#qustionid').val();
+         $scope.questionsaveupdate = angular.element(event.target).parent().parent().parent().find('.questionid').val();
+         $scope.potentialupdate = angular.element(event.target).parent().parent().parent().find('.potentialval').val();
+         $scope.questionsaveid = angular.element(event.target).parent().parent().parent().find('.questionid').attr("id");
+         $scope.questiontypesavenew = angular.element(event.target).parents("tr").find('.questype').attr("id");
+
+         $scope.questionmandatory = angular.element(event.target).parents("tr").find('.mandatorybutt');
+ 
+         angular.forEach($scope.questionmandatory, function(tagname, index) {
+             if (tagname.style.display == "") {
+                 if (angular.element(tagname).find(".checkboxmandatory").attr("checked") == "checked") {
+
+                     $scope.questionMandotary = true;
+
+                 } else {
+                     $scope.questionMandotary = false;
+
+                 }
+             }
+
+         });
+
+         $scope.potentialsave = angular.element(event.target).parent().parent().parent().parent().find('#potentialid').val();
+         $scope.poiquestionid = angular.element(event.target).parent().parent().parent().find('.poiquestionid').attr("id");
+         $scope.poiquestionslider = angular.element(event.target).parents("tr").next().find('.Sliderrange').val();
+         if(typeof $scope.poiquestionslider==="undefined")
+         {
+
+          $scope.poiquestionslider=0;  
+         }
+
+         $scope.questiontypearr = [{
+             "question": $scope.questionsave,
+             "potential": $scope.potentialsave,
+             "potentialupdate": $scope.potentialupdate,
+             "uiid": $scope.uiconid,
+             "questionid": $scope.questionsaveid,
+             "Questionupdate": $scope.questionsaveupdate,
+             "pagecongfigid": $scope.pageConfigID,
+             "poiquestionid": $scope.poiquestionid,
+             "questiontypenew": $scope.questiontypesavenew,
+             "questionMandotary": $scope.questionMandotary,
+             "questionSlider":$scope.poiquestionslider
+
+         }];
+
+         if ($scope.questionsave != '' && $scope.questiontypesavenew!= '') {
+             var jsondataquestion = JSON.stringify($scope.questiontypearr);
+
+
+             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.insertNewpoiion}', jsondataquestion,
+                 function(result, event) {
+
+                 }, {
+
+                 }
+             );
+
+             poiquestionservice($scope.uiconid).then(function(dataforquestions) {
+                 angular.forEach(dataforquestions.POIQuestions__r.records, function(task, i) {})
+
+                 angular.element(document.getElementById("tablerow")).find("td").html(" ");
+
+                 $scope.AuditQuestions = dataforquestions;
+                  angular.forEach(angular.element(document.getElementsByClassName("tablecol")),function(tagname,i){
+                  angular.element(tagname).remove();    
+                  });
+                  angular.forEach(angular.element(document.getElementsByClassName("dataslider")),function(tagname,i){
+                  angular.element(tagname).remove();    
+                  });
+             });
+             angular.element(element.target).parent().parent().parent().parent().find('.innerinputhide').css('border', '');
+             angular.element(event.target).parent().parent().parent().find('.questionhide').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().find('.potentialhide').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().find('.questype').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().find('.poitypehide').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().parent().find('.innerinputhide').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().parent().find('.innquestionhide').attr("disabled", true);
+             angular.element(event.target).parent().parent().parent().parent().find('.innerpothide').attr("disabled", true);
+             var editelement = angular.element(event.target).parent().html('<button class="btn btn-default butcoloredit backgroundedit" data-title="Edit" data-toggle="modal" data-target="#edit" ng-click="editfunction($index);"></button>');
+
+             $compile(editelement)($scope);
+         } else {
+             angular.element(element.target).parent().parent().parent().parent().find('.innerinputhide').css('border', '1px solid red');
+             angular.element(element.target).parent().parent().parent().parent().find('.questype').css('border', '1px solid red');
+
+         }
+
+
+     }
+
+     $scope.removeRow = function(element) {
+
+
+         $scope.questionsaveid = angular.element(event.target).parent().parent().parent().find('.questionid').attr("id");
+         $scope.poiquestionid1 = angular.element(event.target).parent().parent().parent().find('.poiquestionid').attr("id");
+         $scope.questiondelete = [{
+             "questionid": $scope.questionsaveid,
+             "poiquestionid": $scope.poiquestionid1,
+         }];
+         var jsonquestiondelete = JSON.stringify($scope.questiondelete);
+
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.deletequestions}', jsonquestiondelete,
+             function(result, event) {
+
+             }, {
+
+             }
+         )
+
+         angular.element(event.target).parent().parent().parent().remove();
+         $scope.rowhtml = angular.element(document.getElementsByClassName("dataslider"));
+
+         angular.forEach($scope.rowhtml, function(task, index) {
+
+             task.remove();
+         
+     });
+
+
+     };
+     $scope.editorEnabled = true;
+     $scope.editfunction = function(index, element) {
+
+         angular.element(event.target).parent().parent().parent().find('.questionhide').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().find('.potentialhide').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().find('.questype').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().find('.poitypehide').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().parent().find('.innerinputhide').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().parent().find('.innquestionhide').attr("disabled", false);
+         angular.element(event.target).parent().parent().parent().parent().find('.innerpothide').attr("disabled", false);
+         $scope.valueofustn= angular.element(event.target).parent().parent().parent().find('.questype').val();
+         if($scope.valueofustn=="Slider" || $scope.valueofustn=="slider")
+         {
+     
+           var scopehtml = "<tr class='dataslider'><td>Max Range area</td><td colspan='4'><input type='range' min='0' max='100' class='Sliderrange backgroundslider' ng-model='qty'/></td></tr>";
+               $compile(scopehtml)($scope);
+             $scope.indx = angular.element(event.target).parents("tr").index();
+             angular.element(event.target).parents("tbody").find("tr").eq($scope.indx).after(scopehtml);
+         }
+
+         var saveelement = angular.element(event.target).parent().html("<button class='btn btn-default btn-lg butcoloredit backgroundsavepopup'  data-title='save' data-toggle='modal' data-target='#save' ng-click='questuiontypesave($event)'></button>");
+         $compile(saveelement)($scope);
+     }
+
+     $scope.bindingimage = function(a) {
+
+
+         $scope.uploaddivshowandhide = true;
+         $scope.id = a.target.id;
+         $scope.splitdata = $scope.id.split("/");
+
+         $scope.pageConfigID = $scope.splitdata[1];
+         $scope.pageidvar = $scope.splitdata[1];
+
+         $scope.pageid = angular.element(document.getElementsByClassName("savepos")).attr("id", $scope.pageidvar);
+
+         $scope.pageconuicontrollers = pageconfiguiconservice($scope.pageConfigID);
+         $scope.pageconuicontrollersion = pageconfiguiconiconservice($scope.pageConfigID);
+         $scope.uitypeid = uicontroltypeid();
+         
+angular.element(document.getElementsByClassName("imgdata2")).attr("style","background-image:URL('/servlet/servlet.FileDownload?file='" + $scope.splitdata[0] + "')");
+
+         $scope.backgrundimgdata = {
+             'background-Image': 'URL("/servlet/servlet.FileDownload?file=' + $scope.splitdata[0] + '")',
+
+         }
+         angular.element(document.getElementsByClassName("checkbox1")).css('background-color', '#999999');
+         angular.element(a.target).find('.checkbox1').css('background-color', '#39B54A');
+         $scope.pageconNamesplit = a.target.innerHTML;
+
+         if ($scope.pageconNamesplit.indexOf("<br>") > 0) {
+             $scope.pageconNamesplit = a.target.innerHTML.split("<br>");
+         } else {
+             $scope.pageconNamesplit = angular.element(a.target).parent().html().split("<br>");
+         }
+         $scope.pageconName = $scope.pageconNamesplit[0];
+         $scope.posattname = '';
+         pageconfiguiconiconservice($scope.pageConfigID).then(function(dataforpageconfg) {
+         angular.element(document.getElementsByClassName("wdthbrdrrdus")).val(glbldatapageconicon.Attachments.records[0].Name)
+         }); 
+   var topfrlctn=$(".imagefortablet").position().top;
+   var hghtlctn=$(".hghtfrcal").height();
+
+   
+   var widthfrdiv=$(".imgdata5").height()-(45+(hghtlctn*2)+topfrlctn);
+   if($(window).width()<980)
+   {
+   var widthfrdiv=$(".imgdata5").height()-(15+(hghtlctn*2)+topfrlctn);
+   }
+   
+var total=topfrlctn+hghtlctn;
+$(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");  
+     }
+
+     $scope.bindingpoi = function(a) {
+         $scope.imagesecondiconblob = "";
+         backgroundsave1=0;
+         $("#myModal").attr("style", "display:block;padding-right:11%;margin-top:6%;color: rgb(153, 153, 153);position:absolute;");
+         $("#myModal").addClass("in");
+         $(".angdradrst").css("display", "block");
+
+         $scope.uiconid = a.target.id;
+
+         angular.element(document.getElementsByClassName("backgroundsave1")).attr("id", a.target.id);
+
+            poiquestionservice(a.target.id).then(function(resultdata){
+            $scope.AuditQuestions = resultdata;
+            $scope.poitypesavenew = resultdata.POIType__r.Id;
+            getPOITypeattnameservice($scope.poitypesavenew).then(function(resultdatafortype){
+            angular.element(document.getElementsByClassName("textareaheader")).val(resultdatafortype[0].Attachments.records[0].Name);
+            })
+         });
+      
+         $scope.idoff = angular.element(document.getElementsByClassName("backgroundsave1")).attr("id");
+         
+         if(typeof $scope.idoff!="undefined"){
+         poiquestionservice($scope.idoff).then(function(result){
+         if(typeof result.POIBusinessMembers__r!="undefined")
+         {
+         $scope.bprocessoldid =result.POIBusinessMembers__r.records[0].Id;
+         }
+         });
+         }
+
+          angular.forEach(angular.element(document.getElementsByClassName("dataslider")),function(tagname,i){ 
+          angular.element(tagname).remove();
+          });
+
+         poiHeaderServies($scope.uiconid).then(function(data) {
+          angular.element(document.getElementsByClassName("txtxareaiamges")).val(data[0].Attachments.records[0].Name)
+ 
+         });
+         angular.element(document.getElementsByClassName("backgroundAddnew")).attr("disabled",false);
+         //angular.element(document.getElementsByClassName("backgroundfilter")).attr("disabled",false);
+         $scope.qustntype = AuditQuestionTypeservice();
+         $scope.poitype = getPOITypeListservice();
+         $scope.title = a.target.attributes.value.value;
+         $scope.desciptionofpoi= a.target.attributes.value.value;
+          //angular.element(document.getElementsByClassName("backgroundFile ")).removeClass("clickedpoi");
+          //angular.element(a.target).addClass("clickedpoi");
+         angular.element(document.getElementsByClassName("dscrptnpoi")).attr("style","display:block");
+         angular.element(document.getElementsByClassName("newpoiinteresetheader")).attr("style","display:none;");
+         angular.element(document.getElementsByClassName("checkbox2")).css('background-color', '#999999');
+
+         angular.element(a.target).find('.checkbox2').css('background-color', '#39B54A');
+
+         angular.element(document.getElementsByClassName("tablecol")).remove();
+         angular.element(document.getElementById("qustionid")).val("");
+         angular.element(document.getElementById("potentialid")).val("");
+         angular.element(document.getElementsByClassName("wdthbrdrrdus1")).val("");
+         angular.element(document.getElementsByClassName("titlevalue")).css('border', '1px solid #ccc');
+         var loopthedata=angular.element(document.getElementsByClassName("heightview")).find(".backgroundFile");
+         angular.forEach(loopthedata,function(loopdataa,b){
+         angular.element(loopdataa).removeClass("clickedpoi");  
+         if(loopdataa.id==a.target.id)
+         {
+         angular.element(loopdataa).addClass("clickedpoi");  
+         }
+         });
+           
+       
+     }
+
+     $scope.selectdevice = function(a) {
+
+         $scope.selectdevicename = a.target.innerHTML;
+         $scope.selectdeviceid = a.target.id;
+         $scope.btninpt = serviceforgetaccountchange($scope.selectdeviceid);
+
+         angular.forEach(dataofdevices, function(value, key) {
+             if (value.Name == a.target.innerHTML) {
+                 
+
+         angular.element(document.getElementsByClassName("imagefortablet")).attr("src","/servlet/servlet.FileDownload?file=" + value.mobileDevice__r.attachmentId__c + "");
+                 /*$scope.devicebackgroundimg = {
+                     'background-Image': 'URL("/servlet/servlet.FileDownload?file=' + value.attachmentId__c + '")'
+                 }*/
+             }
+         });
+
+     }
+
+     $scope.stepsModel = [];
+     $scope.imageUpload = function(element) {
+
+         var reader = new FileReader();
+         reader.onload = $scope.imageIsLoaded;
+         reader.readAsDataURL(element.files[0]);
+         $scope.data = element.files[0];
+         $scope.posattname = $scope.data.name.split(".");
+
+     }
+
+     $scope.clickforqutntype = function(event, element) {
+
+         angular.element(event.target).parent().parent().parent().find("input").val(event.target.innerHTML);
+         angular.element(event.target).parent().parent().parent().find("input").attr("id", event.target.id);
+
+         $scope.rowhtmldataslider = angular.element(document.getElementsByClassName("dataslider"));
+         angular.forEach($scope.rowhtmldataslider, function(task, index) {
+
+             task.remove();
+         });
+
+         if (event.target.innerHTML == "Slider" || event.target.innerHTML == "slider") {
+             var a=angular.element(document.getElementById("mainsliders")).html();
+             <!--<input type='range' min='0' max='100' class='Sliderrange backgroundslider' ng-model='qty'/>-->
+             var scopehtml = "<tr class='dataslider'><td>Max Range area</td><td colspan='4'><input type='range' min='0' max='100' class='Sliderrange backgroundslider' ng-model='qty'/></td></tr>";
+             $compile(scopehtml)($scope);
+
+             $scope.indx = angular.element(event.target).parents("tr").index();
+             angular.element(event.target).parents("tbody").find("tr").eq($scope.indx).after(scopehtml);
+
+
+
+             angular.element(event.target).find('input[type="range"]').on('mouseup', function() {
+                 this.blur();
+             }).on('mousedown input', function() {
+                 styl.inject('input[type=range]:focus::-webkit-slider-thumb:after, input[type=range]:focus::-ms-thumb:after, input[type=range]:focus::-moz-range-thumb:after', {
+                     content: "'" + this.value + "'"
+                 }).apply();
+             });
+         }
+     }
+
+     $scope.clickforpoitype = function(event, element) {
+
+         angular.element(event.target).parent().parent().parent().find("input").val(event.target.innerHTML);
+         angular.element(event.target).parent().parent().parent().find("input").attr("id", event.target.id);
+         $scope.poitypesavenew = angular.element(event.target).parent().parent().parent().parent().find('.poitype').attr("id");
+         $scope.poitypeattname = getPOITypeattnameservice($scope.poitypesavenew);
+         angular.element(document.getElementsByClassName("textareaheader")).val($scope.poitypeattname  [0].Attachments.records[0].Name);
+
+     }
+
+     $scope.imageUploadforicon = function(element) {
+
+         var reader = new FileReader();
+         reader.onload = $scope.imageIsLoadedforicon;
+
+         reader.readAsDataURL(element.files[0]);
+         $scope.dataicon = element.files[0];
+         angular.element(document.getElementsByClassName("textareaheader")).val(element.files[0].name);
+         element.value = null;
+     }
+
+     $scope.imageIsLoadedforicon = function(e) {
+
+         $scope.$apply(function() {
+             var splidata = e.target.result.split(",");
+             $scope.imageiconblob = splidata[1];
+
+         });
+     }
+
+     $scope.imageUploadforimageicon = function(element) {
+
+         var reader = new FileReader();
+         reader.onload = $scope.imageIsLoadedforimageicon;
+
+         reader.readAsDataURL(element.files[0]);
+
+         $scope.datas = element.files[0];
+         angular.element(document.getElementsByClassName("txtxareaiamges")).val(element.files[0].name);
+         element.value = null;
+
+
+     }
+
+     $scope.imageIsLoadedforimageicon = function(e) {
+
+         $scope.$apply(function() {
+             var splidata = e.target.result.split(",");
+             $scope.imagesecondiconblob = splidata[1];
+
+
+         });
+     }
+
+     $scope.savenewpos = function() {
+
+         $scope.blobdata = angular.element(document.getElementsByClassName("imgdata")).css('background-image');
+         $scope.blobdatasplit = $scope.blobdata.split("(");
+         $scope.splitdataforurl = $scope.blobdatasplit[1].split(")");
+         $scope.urlforbolb = $scope.splitdataforurl[0].split(",");
+
+         $scope.maindataforsave = [{
+             "Name": $scope.pageconName,
+             "Blobdata": $scope.urlforbolb[1],
+             "pageConfigID": $scope.pageConfigID,
+             "mobiledeviceid": $scope.selectdeviceid,
+             "posattname": $scope.posattname[0],
+             "pageConfigTypeId": PageConfigTypeId,
+             "appsettingid": $scope.selectdeviceid,
+         }];
+
+         var jsondata = JSON.stringify($scope.maindataforsave);
+         Visualforce.remoting.Manager.invokeAction(
+             '{!$RemoteAction.CtrlPOSAppBuilder.insertDataPOS}', jsondata,
+             function(result, event) {}, {
+
+             }
+         );
+         $scope.btninpt = serviceforgetaccountchange($scope.selectdeviceid);
+
+         var arraeyofxsis = [];
+
+              var hght=$(".imgdata").height();
+    var wdth1=$(".imgdata").width();
+
+     scalewidt=wdth1/1024;
+    scalehght=hght/768;
+         $(".circleBase").each(function() {
+             var ycordinate = $(this).position().top;
+             var xcordinate = $(this).position().left;
+             xcordinate=(xcordinate/scalewidt);
+             ycordinate=(ycordinate/scalehght);
+    
+        
+             var iddat = $(this).attr("id");
+             var objforxsis = {
+
+                 "yaxiss": ycordinate,
+                 "xaxisi": xcordinate,
+                 "uiconid": iddat
+             };
+             arraeyofxsis.push(objforxsis);
+
+         });
+         var jsondatafordata = JSON.stringify(arraeyofxsis);
+         Visualforce.remoting.Manager.invokeAction(
+             '{!$RemoteAction.CtrlPOSAppBuilder.uiconxyupdate}', jsondatafordata,
+             function(result, event) {}, {
+
+             }
+         );
+
+
+
+     }
+
+     $scope.saveposmember = function() {
+
+        $scope.checkedvalue="";
+        angular.forEach(angular.element(document.getElementsByClassName("checkedvalue")).find("tr"),function(value,index){
+
+        if(angular.element(value).find(".bprocessval").attr("checked")=="checked")
+        {
+            if($scope.checkedvalue=="")
+        {
+            $scope.checkedvalue=angular.element(value).find(".bprocessclass").text();   
+        }
+        else
+        {
+            $scope.checkedvalue=$scope.checkedvalue+","+angular.element(value).find(".bprocessclass").text();    
+        }
+        }
+
+        });
+
+        //$scope.bbprocessid = angular.element(document.getElementsByClassName("popupdescription")).attr("id");
+
+        //$scope.idoff = angular.element(document.getElementsByClassName("backgroundsave1")).attr("id");
+
+        $scope.bbprocessscope = [{
+             "filtervalues": $scope.checkedvalue,
+             "uiid": $scope.uiconid,
+             "bbprocessid":$scope.bbprocessid,
+         }];
+            var bbprocessjsondata = JSON.stringify($scope.bbprocessscope);
+            
+             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.updatebbprocess}', bbprocessjsondata,
+                 function(result, event) {}, {
+
+                 }
+             );
+
+         $("#myfilter").attr("style", "display:none;");
+
+     }
+     
+     $scope.savenewpoi = function(event) {
+ 
+         $scope.maindataforsaveforpopup = '';
+         $scope.poitypesavenew = angular.element(event.target).parent().parent().parent().parent().find('.poitype').attr("id");
+         $scope.poiheaderdescription = angular.element(document.getElementsByClassName("textid")).val();
+         if (typeof $scope.poiheaderdescription === 'undefined') {
+             $scope.poiheaderdescription = angular.element(document.getElementsByClassName("textid1")).val();
+         }
+         if (typeof $scope.datas !== 'undefined') {
+             $scope.poiheaderimagedata = $scope.datas.name.split(".");
+             $scope.value2 = $scope.poiheaderimagedata[0];
+         } else {
+             $scope.value2 = '';
+         }
+
+         if (typeof $scope.dataicon !== 'undefined') {
+             $scope.poitypeicon = $scope.dataicon.name.split(".");
+             $scope.value1 = $scope.poitypeicon[0];
+         } else {
+             $scope.value1 = '';
+         }
+
+         $scope.poiheaderid = angular.element(document.getElementsByClassName("textid")).attr("id");
+
+
+         $scope.idoff = angular.element(document.getElementsByClassName("backgroundsave1")).attr("id");
+         $scope.valueoftitle=angular.element(document.getElementsByClassName("titlevalue")).val();
+  
+         $scope.maindataforsaveforpopup = [{
+             "title": $scope.title,
+             "imageicon": $scope.imageiconblob,
+             "uiid": $scope.idoff,
+             "poitypeid": $scope.poitypesavenew,
+             "pageconfigid": $scope.pageConfigID,
+             "xcoordinatevalue": xcoordinate,
+             "ycoordinatevalue": ycoordinate,
+             "poitypeiconname": $scope.value1,
+             "poiheaderid": $scope.poiheaderid,
+             "poitypeattid": $scope.poitypeattid,
+             "imagesicontwo": $scope.imagesecondiconblob,
+             "description": $scope.poiheaderdescription,
+             "poiheaderimagename": $scope.value2,
+             "uicontypeid": uicontroltid,
+             "bbprocessoldid":$scope.bprocessoldid,
+
+         }];
+            
+            if(backgroundsave1==1)
+            {
+                $scope.uiconid="";
+            }
+         if ($scope.valueoftitle != "") {
+             var jsondata = JSON.stringify($scope.maindataforsaveforpopup);
+             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.insertNewPointInters}', jsondata,
+                 function(result, event) {
+ var resultdata = htmlDecode(result);
+               
+                    $scope.uiconid=resultdata.replace(/"|_/g,'');
+                         
+                 }, {
+
+
+                 }
+             );
+             angular.element(document.getElementsByClassName("titlevalue")).css('border', '1px solid #ccc');
+                $scope.disablenew=1;
+                  $scope.AuditQuestions = poiquestionservice($scope.uiconid);
+         } else {
+
+             angular.element(document.getElementsByClassName("titlevalue")).css('border', '1px solid red');
+             
+
+         }
+
+         //if ($scope.title != null) {
+          //   $("#myModal").attr("style", "display:none;");
+        // }
+         $(".removediv").remove();
+         $scope.pageconuicontrollers = pageconfiguiconservice($scope.pageConfigID);
+         $scope.pageconuicontrollersion = pageconfiguiconiconservice($scope.pageConfigID);
+         //$scope.uiconnewid = uiconnewid();
+         
+
+        if($scope.disablenew==1)
+        {
+         angular.element(document.getElementsByClassName("backgroundAddnew")).attr("disabled",false);
+         angular.element(document.getElementsByClassName("backgroundfilter")).attr("disabled",false);
+
+        }
+
+     }
+
+     $scope.cancelfilter = function() {
+
+         $("#myfilter").attr("style", "display:none;");
+         // $(".removediv").remove();
+
+     }
+
+     $scope.close = function() {
+
+         $("#myModal").attr("style", "display:none;");
+         $("#myfilter").attr("style", "display:none;");
+         $(".removediv").remove();
+           $scope.disablenew=0;
+     }
+
+     $scope.openfilter = function() {
+          businessprocessservice().then(function(valueofresult){
+         $("#myfilter").attr("style", "display:block;margin-top:9.5%;color: rgb(153, 153, 153);position:absolute;");
+         $("#myfilter").addClass("in");
+         $(".angdradrst").css("display", "block");
+         $scope.bbprocess =valueofresult;
+
+         });
+          poiquestionservice($scope.uiconid).then(function(dataforb){
+
+                        $scope.AuditQuestions=dataforb;
+         
+        $scope.bbprocessid = $scope.AuditQuestions.POIBusinessMembers__r.records[0].Id;
+
+          if(typeof $scope.AuditQuestions.POIBusinessMembers__r.records[0].Filter__c==="undefined")
+          {
+
+             angular.forEach(angular.element(document.getElementsByClassName("checkedvalue")).find("tr"),function(value,index){
+             angular.element(value).find(".checkboxdiv").html("");
+             angular.element(value).find(".checkboxdiv").append("<input type='checkbox' class='bprocessval'>")
+             });
+          }
+          else
+          {
+            $scope.splitvalue= $scope.AuditQuestions.POIBusinessMembers__r.records[0].Filter__c.split(",");
+
+         angular.forEach(angular.element(document.getElementsByClassName("checkedvalue")).find("tr"),function(value,index){
+        angular.forEach($scope.splitvalue,function(vvalue,ii){
+    
+        if(angular.element(value).find(".bprocessclass").text().trim()==vvalue.trim())
+    {
+  
+        angular.element(value).find(".bprocessval").attr("checked",true);
+            
+        }
+    });
+})
+             }
+
+          });
+     }
+
+     $scope.delpoi = function() {
+         $scope.poiquestionid2 = angular.element(event.target).parent().parent().parent().find('.poiquestionid').attr("id");
+         $scope.deletepoipopup = [{
+             "uiid": $scope.uiconid,
+             "poiquestionid": $scope.poiquestionid2,
+         }];
+
+         var deletepoijsondata = JSON.stringify($scope.deletepoipopup);
+
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.deleteUicontrols}', deletepoijsondata,
+             function(result, event) {
+
+             }, {
+
+             }
+         );
+
+         $("#myModal").attr("style", "display:none;");
+         $scope.pageconuicontrollers = pageconfiguiconservice($scope.pageConfigID);
+         $scope.pageconuicontrollersion = pageconfiguiconiconservice($scope.pageConfigID);
+         $scope.AuditQuestions = poiquestionservice($scope.uiconid);
+$scope.disablenew=0;
+     }
+
+     $scope.imageIsLoaded = function(e) {
+
+         $scope.$apply(function() {
+             $scope.backgrundimgdata = {
+                 'background-Image': 'URL( "' + e.target.result + '")',
+
+             }
+         });
+     }
+ $(window).resize(function(){
+  if($(window).width()<1180)
+  {
+
+    //$(".rspnbndng").attr("style","width:16.5%;");
+    //$(".colpadd").attr("style","float:left;");
+  }
+
+   var topfrlctn=$(".imagefortablet").position().top;
+   var hghtlctn=$(".hghtfrcal").height();
+
+   
+   var widthfrdiv=$(".imgdata5").height()-(45+(hghtlctn*2)+topfrlctn);
+   if($(window).width()<980)
+   {
+   var widthfrdiv=$(".imgdata5").height()-(15+(hghtlctn*2)+topfrlctn);
+   }
+   
+var total=topfrlctn+hghtlctn;
+$(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");  
+
+    $scope.$apply(function(){
+                $scope.pageconuicontrollersion = pageconfiguiconiconservice($scope.pageConfigID);
+    });
+});
+     $scope.uploaddivshow = function() {
+
+         $scope.uploaddivshowandhide = true;
+         $scope.backgrundimgdata = '';
+         $scope.pageconuicontrollersion = '';
+         $scope.pageconuicontrollers = '';
+         $scope.pageconName = '';
+         $scope.posattname = '';
+         angular.element(document.getElementsByClassName("savepos")).attr("id", "");
+         angular.element(document.getElementsByClassName("checkbox1")).css('background-color', '#999999');
+     }
+
+ });
+ 
+$(document).on('change','input[type="range"]',function (ab) {
+
+    var val = ($(this).val() - $(this).attr('min')) / ($(this).attr('max') - $(this).attr('min'));
+
+    $(this).css('background-image',
+                '-webkit-gradient(linear, left top, right top, '
+                + 'color-stop(' + val + ', #2699D8), '
+                + 'color-stop(' + val + ', #C5C5C5)'
+                + ')'
+                );
+                var leftv=(val*100)-2;
+                if((val*100)>35)
+                {
+                leftv=(val*100)-3;
+                }
+
+
+                if((val*100)>60)
+                {
+                leftv=(val*100)-4.3;
+                }
+                
+                $(".tooltipvalue").each(function(){
+                $(this).remove();
+                })
+                $(this).parent().append("<div style='left:"+leftv+"%' class='tooltipvalue'>"+$(this).val()+"</div>")
+});
+
+
+ 
+
+
+
+</script>
+
+<link rel="stylesheet" href="{!$Resource.POSCSS}"></link>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<apex:includeScript value="{!$Resource.Lib}"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+
+</apex:page>

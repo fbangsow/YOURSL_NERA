@@ -1,0 +1,39 @@
+<!--
+@Company:Your SL
+@Author:veera
+@Creation date:29/5/2015
+Reference: Ticket no 469
+-->
+
+<apex:page standardController="UIControlAttribute__c" extensions="EctrUIControlAttributePhotoUpload">
+<style>
+img {
+    clip-path: url(#svgPath);
+}
+</style>
+<apex:form id="contentForm">
+    
+        <div style="height:170px;">
+            <apex:pageBlock mode="maindetail">
+                    <apex:pageblocksection columns="1" rendered="{!displaying}">
+                        <apex:image height="150" value="{!URLFOR($Action.Attachment.Download, currentPicture)}" rendered="{!currentPicture != null}"/>
+                        <apex:outputPanel rendered="{!currentPicture == null}"><em>No picture currently available</em></apex:outputPanel>
+                         <svg width="100" height="100">
+                        
+<clipPath id="svgPath"></clipPath>
+</svg>
+                    </apex:pageblocksection>
+                    <apex:pageblocksection columns="1" rendered="{! !displaying}" >
+                        <p>Use the button to below to select a new file and then press "Save"</p>
+                        <apex:inputFile value="{!uploadPicFile}" fileName="{!attachfilename}" />
+                        <p>Or press Cancel to return.</p>
+                    </apex:pageBlockSection>
+            </apex:pageBlock>
+        </div>
+            <apex:commandButton value="Upload new photo" action="{!toggle}" rerender="contentForm" rendered="{!displaying && currentPicture!=null}"/>
+            <apex:commandButton value="Upload photo" action="{!toggle}" rerender="contentForm" rendered="{!displaying && currentPicture==null}"/>
+            <apex:commandButton value="Cancel" action="{!toggle}" rendered="{! !displaying}"/>
+            <apex:commandButton value="Save" action="{!saveFile}" rendered="{! !displaying}"/>
+    </apex:form>
+ 
+</apex:page>

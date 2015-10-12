@@ -1,0 +1,725 @@
+<!--
+@Company: YOUR SL   
+@Author: M.Sunny / V.Veera
+@Creation date: 20.05.2015  
+@Ref: Create dashboard for editing app settings and editing UI Control settings.
+-->
+<apex:page controller="CtrAppSettingsDashboard" sidebar="false" >
+    <style type="Text/CSS">   
+        #upleft {
+          width: 200px;
+          height: 744px;
+          background: #f5f5f5;
+          float: left;
+          border: 1px solid #7b68ee;
+        }
+        
+        #upright {
+          width: 907px;
+          height: 102px;
+          border: 1px solid #7b68ee;
+          border-left: 0.5px solid #7b68ee;
+          border-right: 0.5px solid #7b68ee;
+        }
+        
+        #upright,#upright3 {
+          background: #f5f5f5;
+          float: left;
+         
+        }
+        
+        #upright3 {
+          width: 185px;
+          height: 744px;
+          
+        }
+        
+        #upright2 {
+       
+          
+         
+          border-left: 0.5px solid #7b68ee;
+          border-right: 0.5px solid #7b68ee;
+          border-top: 0.5px solid #7b68ee;
+          
+        }
+        #upright2coord {
+          border: 0px solid #7b68ee;
+        }
+
+        }
+        
+        .upright2image {
+         
+        }
+        
+        #upright1 {
+          width: 300px;
+          height: 400px;
+          background: #f5f5f5;
+          float: left;
+        }
+        
+        .clear {
+          clear: both;
+        }
+        
+        .box {
+          background: #f5f5f5;
+          border: 1px solid #7b68ee;
+          text-align: center;
+          cursor: pointer;
+        }
+        
+        .box.is-pointer-down {
+          background: #09f;
+        }
+        
+        .box.is-dragging {
+          opacity: 0.7;
+        }
+        
+        
+        .menu {
+          width: 20px;
+          height: 20px;
+          float: right;
+        }
+        
+        .Opttextval {
+          margin: 20px;
+          font-size: 20px;
+        }
+        
+        #appsettingsnew {
+          display: none;
+          top: 11px;
+          bottom: 0;
+          position: absolute;
+          left: 212px;
+          width: 870px;
+          background-color: rgb(100, 126, 166);
+          padding: 10px 0px 0px 35px;
+          min-height: 90px;
+          max-height: 90px;
+          color: #ffffff;
+          border: 1px solid #7b68ee;
+          
+        }
+        
+        .singleclass b,.singleclass>.requiredInput {
+          float: left;
+          width: 140px;
+          text-align: right;
+        }
+        
+        .singleclass>.requiredInput {
+          width: 130px;
+        }
+        
+        .singleclass {
+          display: block;
+          width: 870px;
+          margin: 16px -32px 0px -43px;
+        }
+        
+        .singleclass input[type="submit"] {
+          float: right;
+        }
+        
+        .errorMsg {
+          color: #FF8B7D;
+          font-size: 0.8em;
+        }
+        
+        .input-height,.input-width,.input-top,.input-left {
+          display: none;
+        }
+        
+        .cell {
+          background: #2f4f4f;
+        }
+
+        .cellbox {
+          background: #008000;
+        }
+        .backGroundColorpageConfig {
+          background: #fff ;
+        }
+        
+        .Datatable {
+          margin-top: 5px;
+          margin-left: 4px;
+        }
+        
+        .newappsetting {
+          display: inline-block;
+          min-width: 190px;
+          padding: 9px;
+          height: 50px;  
+         } 
+        .uicontroller,.output-name { 
+          color: #4682b4;
+          font-family: arial;
+         }   
+             
+        .appSettingButton {
+         border: 1px solid #7b68ee !important;
+         font-size: 11px !important;
+         font-family: arial !important; 
+         padding: 10px 10px 10px 10px !important; 
+         text-decoration:none !important; 
+         display: inline-block !important;
+         font-weight: bold !important; 
+         color: #000 !important;
+         min-width: 190px !important;
+         width: 100px !important;
+         background: none !important;
+         border-radius: 3px !important;
+        }
+        
+        .newappsetting {
+         border: 1px solid #7b68ee;
+         font-size: 12px;
+         font-family: arial; 
+         padding: 10px 10px 10px 10px; 
+         text-decoration: none; 
+         display: inline-block;
+         font-weight: bold; 
+         color: #000000;
+         min-width: 190px;
+         width: 100px;
+         background: none !important;
+         border-radius: 3px !important;
+        }
+        .Savebtn,.cancelIT {
+         border: 1px solid #7b68ee;
+         font-size: 12px;
+         font-family: arial; 
+         padding: 10px 10px 10px 10px; 
+         text-decoration: none; 
+         display: inline-block;
+         font-weight: bold; 
+         color: #000000;
+         min-width: 100px;
+         width: 50px;
+         background: none !important;
+         height: 38px;
+         border-radius: 3px !important;
+        }
+        .SelectClass {
+         border: 1px solid #7b68ee; 
+         padding: 10px 10px 10px 10px; 
+         text-decoration: none; 
+         display: inline-block;
+         font-weight: bold; 
+         color: #000000;
+         min-width: 100px;
+         width: 50px;
+         background: none;
+         height: 38px;
+         border-radius: 3px !important;
+        }
+        .pageimageClass {
+         width: 300px;
+         height: 100px;
+         margin: 150px 0px 0px 300px;
+        }
+
+
+    </style>
+    
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+  <!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+  
+  <apex:includeScript value="{!$Resource.Jqueryv2}"/>
+  <apex:includeScript value="{!$Resource.Jqueryv1}"/>
+
+  <!--<script type="text/javascript">
+    $(function() {
+        $("#uploadFile").on("change", function()
+        {
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return; 
+     
+            if (/^image/.test( files[0].type)){ 
+                var reader = new FileReader(); 
+                reader.readAsDataURL(files[0]); 
+     
+                reader.onloadend = function(){ // set image data as background of div
+                    $(".cell").css("background-image", "url("+this.result+")");
+                   // $(".box").addClass("cell"); 
+                }
+            }
+        });
+    });
+  </script>-->
+
+  <script type="text/javascript">
+            var $ = jQuery.noConflict();
+            $(document).ready(function() {
+                var xBezel = 0;
+                var yBezel = 0;
+                var widthcal = 0;
+                var heightcal = 0;
+
+                function htmlDecode(value) {
+                    if (value) {
+                        return $('<div />').html(value).text();
+                    } else {
+                        return '';
+                    }
+                }
+
+                $(".newappsetting").click(function() {
+                    $("#appsettingsnew").css("display", "block");
+                    return false;
+
+                });
+                $("#upright2,#upright3,#upleft").click(function() {
+
+                    $("#appsettingsnew").css("display", "none");
+                });
+                var jsonObj = [];
+                var jsonObjPageconfig = [];
+
+                $(document).on("mouseleave", ".box", function(e) {
+
+                    if (typeof $(".input-height,.input-left").css("display") !== "undefined") {
+
+                        var id = $(this).find(".uicontroller").attr("id");
+
+                        var height = parseFloat($(".input-height").val());
+                        height = height * heightcal;
+                        height = height.toString();
+
+                        var width = parseFloat($(".input-width").val());
+                        width = width * widthcal;
+                        width = width.toString();
+
+                        var p = $("#upright2")
+                        var offset = p.position();
+
+                        var leftoff = offset.left;
+                        var topoff = offset.top;
+
+                        var xCoordinate1 = parseFloat($(".input-left").val()) - parseFloat(leftoff) - xBezel;
+                        var yCoordinate1 = parseFloat($(".input-top").val()) - parseFloat(topoff) - yBezel;
+
+                        var xCoordinate = parseFloat(xCoordinate1) * widthcal;
+                        var yCoordinate = parseFloat(yCoordinate1) * heightcal;
+
+                        yCoordinate = yCoordinate.toString();
+                        xCoordinate = xCoordinate.toString();
+
+
+
+                        if (width.indexOf(",") > 0) {
+                            width = width.replace(",", ".");
+                        }
+                        if (height.indexOf(",") > 0) {
+                            height = height.replace(",", ".");
+                        }
+                        if (xCoordinate.indexOf(",") > 0) {
+                            xCoordinate = xCoordinate.replace(",", ".");
+                        }
+                        if (yCoordinate.indexOf(",") > 0) {
+                            yCoordinate = yCoordinate.replace(",", ".");
+                        }
+
+                        item = {}
+                        item["id"] = id;
+                        item["height1"] = height;
+                        item["width1"] = width;
+                        item["xCoordinate1"] = xCoordinate;
+                        item["yCoordinate1"] = yCoordinate;
+                        //item["uploadimg"] = uploadimage;
+
+                        jsonObj.push(item);
+                        console.log(jsonObj);
+                    }
+
+                });
+
+
+                $(document).on("click", ".Savebtn", function(e) {
+                    alert("Please confirm if everything is correct");
+                    $(".input-height,.input-width,.input-top,.input-left,.output-name").hide();
+                    $(".box").removeClass("cell");
+                    $(".box").removeClass("cellbox");
+
+                    var jsondata = JSON.stringify(jsonObj);
+                    var jsondataPageconfig = JSON.stringify(jsonObjPageconfig);
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrAppSettingsDashboard.getUIControl}', jsondata, jsondataPageconfig,
+
+                        function(result, event) {
+                            console.log(result);
+                        }, {
+                            escape: true
+                        });
+
+
+                });
+
+
+
+
+                $(document).on("mouseover", ".box", function(e) {
+                    $(".box").removeClass("cell");
+                    $(this).addClass("cell");
+                    $(".input-height,.input-width,.input-top,.input-left,.output-name").attr("style", "display:inline");
+
+                    var top = $(this).css("top");
+                    var left = $(this).css("left");
+                    var width = $(this).css("width");
+                    var height = $(this).css("height");
+                    var name = $(this).text();
+
+                    $(".input-top").val(top);
+                    $(".input-left").val(left);
+                    $('.input-width').val(width);
+                    $('.input-height').val(height);
+                    $('.output-name').val(name);
+
+                });
+
+
+
+                $(document).on("change", ".SelectClass", function(e) {
+                    $(".box").remove();
+                    $(".pageimageClass").remove();
+
+
+                    $(".input-height,.input-width,.input-top,.input-left,.output-name").hide();
+
+                    if ($(".SelectClass").val() != "None") {
+                        var jsondata = $(".SelectClass").val();
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrAppSettingsDashboard.getpageconfigUIcon}', jsondata,
+
+                            function(result, event) {
+                                var resultdata = htmlDecode(result);
+                                var a = JSON.parse(resultdata);
+                                var p = $("#upright2");
+                                var offset = p.position();
+                                var leftoff = offset.left;
+                                var topoff = offset.top;
+                                $(".box1").css("background-color", "" + a.BackGround_Color__c + "");
+                                $(".input-Backcolor").val(a.BackGround_Color__c);
+
+
+
+
+                                $.each(a.UIControls__r.records, function(key, value) {
+
+                                    var sprtewidth = parseFloat(value.XCoordinate__c) / widthcal;
+                                    var sprteheight = parseFloat(value.YCoordinate__c) / heightcal;
+
+
+                                    var cmbneleft = parseFloat(leftoff) + sprtewidth + xBezel;
+                                    var cmbnetop = parseFloat(topoff) + sprteheight + yBezel;
+
+                                    var height1 = value.Height__c / heightcal;
+                                    var width1 = value.Width__c / widthcal;
+
+                                    $("#upright2").append("<div style='height:" + height1 + "px; width:" + width1 + "px; position:absolute; border: 0.5px solid #55658E; background-image : url(/servlet/servlet.FileDownload?file=" + value.AttachmentId__c + "); background-repeat: no-repeat; background-size: 100% 100%; left:" + cmbneleft + "px;top:" + cmbnetop + "px' class='box' ><p class='uicontroller' id='" + value.Id + "' >" + value.Name + "(" + value.Type__c + ")" + "</p></div>");
+                                })
+                            }, {
+                                escape: true
+                            });
+                    }
+                });
+
+                $(document).on("click", ".cancelIT", function(e) {
+                    alert("Please confirm It before going to cancel");
+                    $(".box").remove();
+                    $(".pageimageClass").remove();
+
+
+                    $(".input-height,.input-width,.input-top,.input-left,.output-name").hide();
+
+                    if ($(".SelectClass").val() != "None") {
+                        var jsondata = $(".SelectClass").val();
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrAppSettingsDashboard.getpageconfigUIcon}', jsondata,
+
+                            function(result, event) {
+                                var resultdata = htmlDecode(result);
+                                var a = JSON.parse(resultdata);
+                                var p = $("#upright2");
+                                var offset = p.position();
+                                var leftoff = offset.left;
+                                var topoff = offset.top;
+                                $(".box1").css("background-color", "" + a.BackGround_Color__c + "");
+                                $(".input-Backcolor").val(a.BackGround_Color__c);
+
+
+
+
+                                $.each(a.UIControls__r.records, function(key, value) {
+
+                                    var sprtewidth = parseFloat(value.XCoordinate__c) / widthcal;
+                                    var sprteheight = parseFloat(value.YCoordinate__c) / heightcal;
+
+
+                                    var cmbneleft = parseFloat(leftoff) + sprtewidth + xBezel;
+                                    var cmbnetop = parseFloat(topoff) + sprteheight + yBezel;
+
+                                    var height1 = value.Height__c / heightcal;
+                                    var width1 = value.Width__c / widthcal;
+
+                                    $("#upright2").append("<div style='height:" + height1 + "px; width:" + width1 + "px; position:absolute; border: 0.5px solid #55658E; background-image : url(/servlet/servlet.FileDownload?file=" + value.AttachmentId__c + "); background-repeat: no-repeat; background-size: 100% 100%; left:" + cmbneleft + "px;top:" + cmbnetop + "px' class='box' ><p class='uicontroller' id='" + value.Id + "' >" + value.Name + "(" + value.Type__c + ")" + "</p></div>");
+                                })
+                            }, {
+                                escape: true
+                            });
+                    }
+                });
+
+
+                $(document).on("click", ".appSettingButton", function(e) {
+                    $(".box").remove();
+                    $(".pageimageClass").remove();
+
+
+                    $(".input-height,.input-width,.input-top,.input-left,.output-name").hide();
+
+                    var appSettingsjsondata = $(this).attr("class");
+                    var splitclass = appSettingsjsondata.split(" ");
+                    var appSettingsjsondatainput = splitclass[2];
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrAppSettingsDashboard.getAppSettingsImages}', appSettingsjsondatainput,
+
+                        function(result, event) {
+                            var resultdata = htmlDecode(result);
+                            var a = JSON.parse(resultdata);
+
+                            var p = $("#upright2");
+                            var offset = p.position();
+
+                            var leftoff = offset.left;
+                            var topoff = offset.top;
+
+                            xBezel = a.mobileDevice__r.XBezel__c;
+                            yBezel = a.mobileDevice__r.YBezel__c;
+
+                            var yBezel1 = parseFloat(yBezel) + parseFloat(topoff);
+                            var xBezel1 = parseFloat(xBezel) + parseFloat(leftoff);
+
+
+                            var yframe = a.mobileDevice__r.YFrame__c;
+                            var xframe = a.mobileDevice__r.XFrame__c;
+
+
+                            $("#upright2").css({
+                                'background-image': "url('/servlet/servlet.FileDownload?file=" + a.mobileDevice__r.attachmentId__c + "')",
+                                'background-size': "907px 640px",
+                                'width': "907px",
+                                'height': "640px"
+
+                            });
+
+                            widthcal = parseFloat(a.mobileDevice__r.width__c) / parseFloat($("#upright2").width());
+                            heightcal = parseFloat(a.mobileDevice__r.height__c) / parseFloat($("#upright2").height());
+
+
+
+                            $("#upright2").append("<div style='height:" + yframe + "px; width:" + xframe + "px; position:absolute; border: 0px solid #55658E; left:" + xBezel1 + "px;top:" + yBezel1 + "px' class='box1' ></div>");
+
+                        }, {
+                            escape: true
+                        });
+
+                });
+
+                $(document).on("click", ".Savebtn", function(e) {
+
+                    var backgroundcolor = $(".input-Backcolor").val();
+                    var backgroundimageurl = $(".input-imageurl").val();
+
+                    item = {}
+
+
+                    item["backgroundcolorJSon"] = backgroundcolor;
+                    item["backgroundimageurlJSon"] = backgroundimageurl;
+
+
+                    jsonObjPageconfig.push(item);
+                    // alert(jsonObjPageconfig);
+                    console.log(jsonObjPageconfig);
+                    //alert(jsonObjPageconfig);
+
+                });
+
+                $(document).on("mousemove", function(event) {
+                    $("#mousepoint").text("pageX: " + event.pageX + ", pageY: " + event.pageY);
+                });
+
+            });
+ </script>
+  
+<!--if(e.which==13){-->
+    <apex:form >
+    <div>
+    <div id="upleft">
+       
+        <input type="button" value="New AppSettings" style="margin: 12px 0px 0px 5px;" Class="newappsetting" /><br/><br/><br/><br/>
+        <b style="margin-left: 59px;font-size: 13px;">AppSettings</b>
+        <apex:dataTable value="{!listAppSettings}" var="app" styleClass="Datatable" >     
+            <apex:column styleClass="columnstyle"  >
+            
+                <apex:actionRegion >                
+                    <apex:commandbutton value="{!app.name}" action="{!GetAppSettings}" reRender="app1,app2"  styleClass="appSettingButton {!app.id}"  > 
+
+                    <apex:param value="{!app.id}" name="accval" assignTo="{!selectedappsettings}"  />                  
+                    </apex:commandbutton>
+                </apex:actionRegion>
+            </apex:column>
+        </apex:dataTable> 
+
+
+
+
+
+        </div> 
+    
+        <div style="float:left;">
+        <div id="upright"> 
+        
+            <apex:outputPanel id="app1">
+            <b class="Opttextval"><apex:outputText value="{!AppSettingValue}"/></b>
+                <apex:selectList value="{!PageConfigSelect}" multiselect="false" size="1" style="width:189px;margin:46px;font-size:14px;" styleClass="SelectClass">
+                    <apex:selectOptions value="{!PageConfig}"/> 
+                </apex:selectList> 
+                <input type="button" value="Save" class="Savebtn" />
+                <input  type="button" value="Cancel" class="cancelIT"></input>
+            </apex:outputPanel>         
+        </div>
+        <div class="clear"></div>       
+        <div id="upright2">  
+        <div id="upright2coord">
+        <apex:outputPanel id="app2">      
+        <script type="text/javascript">
+                 var $ = jQuery.noConflict();
+                 $(document).ready(function() { 
+                 
+                 var p = $("upright2");                
+                 var offset = p.offset();
+                 
+                 $(document).on("mouseover",".box",function(){
+                     $(".box").removeClass('drag');
+
+                     $(this).addClass('drag');
+                     var c = $('.drag');
+                     
+                     $('.drag').draggable({
+                         revert: function() {
+                             var position = $(c).position();
+                             $(".input-top").val(position.top + "px");
+                             $(".input-left").val(position.left + "px");
+                             $(this).addClass("cellbox");  
+                             
+                         },
+            
+                         containment: '.box1',
+                        
+                     });
+                     $('.drag').resizable({
+                         resize: function(event, ui) {
+                             var width = $(c).width();
+                             var height = $(c).height();
+                             $('.input-width').val(width + "px");
+                             $('.input-height').val(height + "px");
+                             $(this).addClass("cellbox");  
+                             
+                         },
+                         handles: ' n, e, s, w, ne, se, sw, nw',
+                         containment: '.box1',                          
+                     });
+                     
+                     $(".input-width").on("keyup", function(e) {
+                         
+                         var newWidth = $(".input-width").val();
+                         $(".drag").width(newWidth + "px");
+                         
+                         
+                         
+            
+                     });
+                     $(".input-height").on("keyup", function(e) {
+                                
+                         var newheight = $(".input-height").val();
+                         $(".drag").height(newheight + "px");
+                         
+
+            
+                     });
+                     $(".input-top").on("keyup", function(e) {
+            
+                         var newtop = $(".input-top").val();
+                         $(".drag").css("top", newtop + "px");
+                          
+            
+                     });
+                     $(".input-left").on("keyup", function() {
+            
+                         var newleft = $(".input-left").val();
+                         $(".drag").css("left", newleft + "px");
+                         
+            
+                     });
+ 
+                 });
+
+                      
+                       $(".input-Backcolor").on("blur", function() {
+
+
+                         var newBackgroundColor = $(".input-Backcolor").val();
+                      
+                         $(".box1").css("background-color", "'"+ newBackgroundColor +"'");
+
+                     });
+
+             });
+                         
+        </script>           
+        </apex:outputPanel>
+        </div> 
+        </div>
+        </div>
+         <div id="upright3" style="border:1px solid #7b68ee" >
+
+          <div  style="margin-top: 100px;">
+              <b style="text-align: center;margin-left: 40px;font-size: 13px;">UIControls</b><br/>
+
+              <label >Name : <output type="text" class="output-name" size="10"/></label><br/>
+              <label >Height : <input type="text" class="input-height" size="10" /></label><br/>
+              <label >Width : <input type="text" class="input-width" size="10"/></label><br/>
+              <label >Y-Coordinate : <input type="text" class="input-top" size="10"/></label><br/>
+              <label >X-Coordinate : <input type="text" class="input-left" size="10"/></label><br/>
+
+            <!--  <b style="text-align: center;margin-left: 20px;font-size: 13px;">PageConfig Controls</b><br/>
+               <label >BackGround Color <input type="text" class="input-Backcolor" size="10"/></label><br/>
+             <label >BackGround Image <input id="uploadFile" type="file" name="image" class="img" /></label>-->
+
+              
+              
+          </div>   
+
+           
+       </div>       
+       </div>  
+    
+       <div id="appsettingsnew">                          
+         <div class="singleclass"> <b>AppSettings Name :</b>&nbsp;&nbsp;<apex:inputField value="{!appsett.Name}" required="true" html-placeholder="Name" style="border:1px solid red"/>     
+              <b>AppVersion :</b><apex:inputField value="{!appsett.AppVersion__c}" required="true" html-placeholder="AppVersion(Number)" style="border:1px solid red"/>      
+              <b>Hash Key :</b><apex:inputField value="{!appsett.Hash_Key__c}" html-placeholder="Hash Key"/>      
+          </div>
+          <div class="singleclass">
+              <b>MobileDevice :</b><apex:inputField value="{!appsett.mobileDevice__c}" required="true" html-placeholder="MobileDevice"  style="border:1px solid red" />    
+              <b>version :</b><apex:inputField value="{!appsett.version__c}" html-placeholder="Version"/>
+              <apex:commandButton value="Save" action="{!saveappsettings}" style="display:inline-block;min-width: 100px;width: 80px;padding:5px 10px;margin: 0px 81px 0px 1px;" styleClass="savehide" />    
+         </div>
+      </div>     
+      
+    </apex:form>
+</apex:page>

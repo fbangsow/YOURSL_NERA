@@ -1,0 +1,303 @@
+<apex:page controller="CtrAppSettingConfig" sidebar="false">
+
+
+<html><head><title>{!HTMLENCODE($request.title)}</title></head></html>
+<style >
+    
+#upleft {
+    width: 200px;
+    height: 714px;
+    background: #BDBDBD;
+    float: left;
+    text-align: center;
+}
+#upright {
+    width: 900px;
+    height: 100px;
+}
+#upright,
+#upright3 {
+    background: #BDBDBD;
+    float: left;
+    margin: 5px;
+}
+#upright3 {
+    width: 180px;
+    height: 494px;
+}
+#upright2 {
+    width: 900px;
+    height: 600px;
+    background: #BDBDBD;
+    margin: 5px;
+    float: left;
+    border: 2px solid #000;
+}
+#upright1 {
+    width: 300px;
+    height: 400px;
+    background: #BDBDBD;
+    float: left
+}
+.clear {
+    clear: both;
+}
+.box {
+    background: #74DEDE;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+}
+.box.is-pointer-down {
+    background: #09F;
+}
+.box.is-dragging {
+    opacity: 0.7;
+}
+#upright3 ul {
+    margin-left: 0px!important;
+    padding-left: 0px;
+}
+#upright3 ul li {
+    margin-left: 5px!important;
+}
+.menu {
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+.Opttextval {
+    margin: 20px;
+    font-size: 20px;
+}
+
+#appsettingsnew {
+display:none;
+     top: 14px;
+  bottom: 0;
+  position: absolute;
+  left: 215px;
+  width: 65.5%;
+  background-color: rgb(100, 126, 166);
+  padding: 10px 16px 0px 16px;
+  min-height: 90px;
+  max-height: 90px;
+  color: #fff;
+}
+.singleclass b,.singleclass>.requiredInput{float:left;width:140px;  text-align: right;}
+.singleclass>.requiredInput{width:130px;}
+.singleclass{display:block;width:100%;margin:2% 0;}
+.singleclass input[type="submit"]{
+float:right;
+}
+ .errorMsg{color: #FF8B7D;font-size: 0.8em;}
+    </style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+ $(document).ready(function() {
+    $(".newappsetting").click(function() {
+        $("#appsettingsnew").css("display", "block");
+        return false;
+
+    });
+    $("#upright2,#upright3").click(function() {
+
+        $("#appsettingsnew").css("display", "none");
+    });
+
+
+    var jsonObj = [];
+
+    $(document).on("mouseleave", ".box", function(e) {
+
+        if (typeof $(".input-height,.input-left").css("display") !== "undefined") {
+            var id = $(this).find(".iddata").text();
+            var Height = $(".input-height").val();
+            var Width = $(".input-width").val();
+            var XCoordinate = $(".input-top").val();
+            var YCoordinate = $(".input-left").val();
+            if (Width.indexOf(",") > 0) {
+                Width = Width.replace(",", ".");
+            }
+            if (Height.indexOf(",") > 0) {
+                Height = Height.replace(",", ".");
+            }
+            if (XCoordinate.indexOf(",") > 0) {
+                XCoordinate = XCoordinate.replace(",", ".");
+            }
+            if (YCoordinate.indexOf(",") > 0) {
+                YCoordinate = YCoordinate.replace(",", ".");
+            }
+
+            item = {}
+            item["id"] = id;
+            item["Height1"] = Height;
+            item["Width1"] = Width;
+            item["XCoordinate1"] = XCoordinate;
+            item["YCoordinate1"] = YCoordinate;
+
+            jsonObj.push(item);
+            console.log(jsonObj);
+        }
+
+    });
+
+
+    $(document).on("click", ".Savebtn", function(e) {
+        var jsondata = JSON.stringify(jsonObj)
+        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrAppSettingConfig.GetUIControl}', jsondata,
+
+            function(result, event) {
+                console.log(result);
+            }, {
+                escape: true
+            });
+    });
+});
+</script>
+<!--if(e.which==13){-->
+<apex:form >
+   <div id="upleft">
+       
+        <apex:commandButton value="New AppSettings" style="display:inline-block;min-width: 190px;width: 80px;padding:5px 10px;" styleClass="newappsetting"/>
+
+     
+        <apex:dataTable value="{!AppSettingslist}" var="app" >
+        
+            <apex:column headerValue="AppSettings">
+                <apex:actionRegion >
+                
+                    <apex:commandbutton value="{!app.name}" action="{!GetAppSettings}" reRender="app1,app3,app2" style="display:inline-block;min-width: 190px;width: 80px;padding:5px 10px;" >                    
+                    <apex:param value="{!app.id}" name="accval" assignTo="{!selectedappsettings}" />                  
+                    </apex:commandbutton>
+                </apex:actionRegion>
+            </apex:column>
+        </apex:dataTable> 
+        </div> 
+
+        <div style="float:left;">
+        <div id="upright"> 
+        
+            <apex:outputPanel id="app1">
+            <b class="Opttextval"><apex:outputText value="{!AppSettingValue}"/></b>
+                <apex:selectList value="{!PageConfigSelect}" multiselect="false" size="1" style="width:150px;margin:50px;">
+                    <apex:selectOptions value="{!PageConfig}"/>
+                        <apex:actionSupport event="onchange" action="{!pageuicon}" reRender="app1,app2">
+                        </apex:actionSupport>    
+                </apex:selectList> 
+                <input type="button" value="Save" class="Savebtn" />
+                <apex:commandButton value="Cancel" action="{!Cancelit}" />
+            </apex:outputPanel>         
+        </div>
+        <div class="clear"></div>       
+        <div id="upright2">         
+        <apex:outputPanel id="app2">      
+            
+         <script type="text/javascript">
+                 $(document).ready(function() {            
+                 var p = $("#upright2");
+                 var offset = p.offset();
+                 $(".box").on('click', function() {
+                     $(".box").removeClass('drag');
+            
+                     $(this).addClass('drag');
+                     var c = $('.drag');
+                     $('.drag').draggable({
+                         revert: function() {
+                             var position = $(c).position();
+                             $(".input-top").val(position.top);
+                             $(".input-left").val(position.left);
+                         },
+            
+                         containment: '#upright2',
+            
+            
+                     }).resizable({
+                         resize: function(event, ui) {
+                             var width = $(c).width();
+                             var height = $(c).height();
+                             $('.input-width').val(width);
+                             $('.input-height').val(height);
+                         },
+            
+                     });
+            
+            
+                     $(".input-width").on("keyup", function(e) {
+                         var newWidth = $(".input-width").val();
+                         $(c).width(newWidth);
+            
+                     });
+                     $(".input-height").on("keyup", function(e) {
+            
+                         var newheight = $(".input-height").val();
+                         $(c).height(newheight);
+            
+                     });
+                     $(".input-top").on("keyup", function(e) {
+            
+                         var newtop = $(".input-top").val();
+                         $(c).css("top", newtop + "px");
+            
+                     });
+                     $(".input-left").on("keyup", function() {
+            
+                         var newleft = $(".input-left").val();
+                         $(c).css("left", newleft + "px");
+            
+                     });
+                 });
+            
+             });
+             
+       </script>     
+        <b class="Opttextval"><apex:outputText value="{!PageConfigValue}"/></b>
+        <apex:repeat value="{!Uicontrollerslist}" var="ui" >        
+     
+            <apex:actionRegion >
+                     <div class="box" style="width:{!FLOOR(ui.Width__c)/2}px; height:{!FLOOR(ui.Height__c)/2}px; left:{!225+FLOOR(ui.XCoordinate__c)/2}px; top:{!239+FLOOR(ui.YCoordinate__c)/2}px; background: ##09F; border: 2px solid #55658E;position:absolute;">                               
+                    <apex:commandlink value="{!ui.name}" action="{!GetUIControllers}" reRender="app3" id="selUI" > 
+                    <p class="iddata" style="display:none;">{!ui.id}</p>                      
+                    <apex:param value="{!ui.id}" name="accval" assignTo="{!SelectedUIControllers}"  />                    
+                    </apex:commandlink>
+                </div>
+            </apex:actionRegion>
+        </apex:repeat>
+        </apex:outputPanel>
+        </div>
+        </div>
+    
+        <div id="upright3" align="left" style="border:1px solid #ffffff" >
+            <apex:outputPanel id="app3">
+                <apex:dataTable value="{!UIControllerslist1}" var="ui">
+                                
+                     <apex:column headerValue="UIControllers" >         
+                          <ul type="none">
+                              <li><h1>Height: </h1><br/><apex:inputField value="{!ui.Height__c}" styleClass="input-height" /> </li>     
+                              <li><h1>Width: </h1><br/><apex:inputField value="{!ui.Width__c}" styleClass="input-width"/>  </li>
+                              <li><h1>XCoordinate: </h1><br/><apex:inputField value="{!ui.XCoordinate__c}" styleClass="input-top"/></li>
+                              <li><h1>YCoordinate: </h1><br/><apex:inputField value="{!ui.YCoordinate__c}" styleClass="input-left"/></li>
+                          </ul>
+                     </apex:column>
+                </apex:dataTable>
+            </apex:outputPanel>
+        </div>
+ 
+     </apex:form>   
+     <apex:form >
+
+     <div id="appsettingsnew">                          
+     <div class="singleclass"> <b>AppSettings Name :</b>&nbsp;&nbsp;<apex:inputField value="{!appsett.Name}" required="true" html-placeholder="Name"/>     
+      <b>AppVersion :</b><apex:inputField value="{!appsett.AppVersion__c}" required="true" html-placeholder="AppVersion(Number)"/>      
+      <b>Hash Key :</b><apex:inputField value="{!appsett.Hash_Key__c}" html-placeholder="Hash Key"/>      
+      </div>
+      <div class="singleclass">
+      <b>MobileDevice :</b><apex:inputField value="{!appsett.mobileDevice__c}" required="true" html-placeholder="MobileDevice"/>    
+      <b>version :</b><apex:inputField value="{!appsett.version__c}" html-placeholder="Version"/>
+      <apex:commandButton value="Save" action="{!saveappsettings}" style="display:inline-block;min-width: 100px;width: 80px;padding:5px 10px;" styleClass="savehide" />    
+  </div>
+    </div>      
+</apex:form>
+</apex:page>
