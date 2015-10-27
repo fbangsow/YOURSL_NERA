@@ -6,14 +6,16 @@
 */
 @IsTest
 public class TestPostDeployment {
-	
-	//we test here the post deployment
-	static testMethod void deployment() {
-		//TODO implement mock test
-		Test.startTest();
-		PostDeployment testObj = new PostDeployment();
-		Test.stopTest();
+    
+    //we test here the post deployment
+    static testMethod void deployment() {
+    
+        //TODO implement mock test
+        TestDataUtility.createNeraTriggerCustomSetting();
+        Test.startTest();
+        PostDeployment testObj = new PostDeployment();
+        Test.stopTest();
 
-		
-	}
+        
+    }
 }

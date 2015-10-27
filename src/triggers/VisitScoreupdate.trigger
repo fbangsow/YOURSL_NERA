@@ -1,6 +1,6 @@
+
 trigger VisitScoreupdate on AuditResult__c (after insert,after update) 
 {
-if(NeraTriggerCustomSetting__c.getValues('VisitScoreupdate').IsActive__c) {	
 Map<Id, Account> parentacc = new Map<Id, Account>();
 
 System.debug('......map......'+parentacc );
@@ -25,5 +25,4 @@ System.debug('......map......'+parentacc );
   }
 system.debug('........line23......'+parentacc.values());
  update parentacc.values();
-}
  }

@@ -80,6 +80,14 @@
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>SubTitle__c</fullName>
+        <externalId>false</externalId>
+        <label>SubTitle</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>UIControl__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

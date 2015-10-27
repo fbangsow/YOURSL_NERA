@@ -75,6 +75,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>AttachmentId__c</fullName>
+        <externalId>false</externalId>
+        <label>AttachmentId</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Hash_Key__c</fullName>
         <externalId>false</externalId>
         <label>Hash Key</label>
@@ -103,6 +113,16 @@
         <required>true</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>OldId__c</fullName>
+        <externalId>false</externalId>
+        <label>OldId</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>version__c</fullName>

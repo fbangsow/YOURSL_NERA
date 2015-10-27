@@ -9,14 +9,10 @@
 global class TestWsAccount {
 
     static  testMethod void webServiceAccount() {
-
-        
+        TestDataUtility.createNeraTriggerCustomSetting();
         Test.startTest();
         String accountPayload;
         Sobject myObject;
-        
-        CleanupTestData.createNeraTriggerCustomSetting();
-	    
         Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
 
         User u = new User(Alias = 'jyothi', Email = 'jyothi.m@neradeveloprttment.org',  EmailEncodingKey = 'UTF-8', LastName = 'Testing', LanguageLocaleKey = 'en_US',  LocaleSidKey = 'en_US', ProfileId = p.Id,

@@ -5,7 +5,6 @@
 @Reference: 
 */
 @RestResource(urlMapping = '/Accounts/*')
-
 global class WsAccounts implements UcbWs {
 
     public static UcbWsResponse doReply(UcbWsRequest request) {
@@ -20,6 +19,12 @@ global class WsAccounts implements UcbWs {
         // do businesslogic
         if(myRequest.resquestedByUser != null) {
             Map<Id,Account> listAccounts = WsAccounts.getAccounts(myRequest.resquestedByUser.Id);
+            Map<Id,String> mapContact = new Map<Id,String>();
+            for(Contact objCon : [SELECT Id,Name,AccountId 
+                                  FROM Contact 
+                                  WHERE AccountId IN:listAccounts.keyset()]){
+                mapContact.put(objCon.AccountId,objCon.Name);
+            } 
 
             if(!listAccounts.isEmpty()){
 
@@ -38,6 +43,7 @@ global class WsAccounts implements UcbWs {
                 for(String accountId : listAccounts.keyset()){
                     AccountWrapper accountWrapper = new AccountWrapper();                   
                         accountWrapper.account = listAccounts.get(accountId);  
+                        accountWrapper.contactName = mapContact.containsKey(accountId) ? mapContact.get(accountId): null;  
                         accountWrapper.visitScore = mapvisitScoreResults.containsKey(accountId) ? mapvisitScoreResults.get(accountId).Result__c : null;                    
                         accountWrapper.lastVisitDate = mapvisitScoreResults.containsKey(accountId) ? mapvisitScoreResults.get(accountId).Date__c : null;                                                  
                     listAccountWrapper.add(accountWrapper);
@@ -87,6 +93,7 @@ global class WsAccounts implements UcbWs {
     public class AccountWrapper{
 
         public Account account {get; set;}
+        public String contactName;
         public Decimal visitScore {get; set;}
         public Date lastVisitDate {get; set;}
     }

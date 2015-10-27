@@ -1,15 +1,18 @@
 /*
 @Company        :Your SL
-@Author         :Jyothi M/Suneetha
+@Author         :Jyothi M
 @Creation date  :12/06/2015
 @Reference      :
 */
-@IsTest
-private class TestEctrPageConfigcPhotoUpload {
+@isTest
+private class TestEctrPageConfigcPhotoUpload{
 
-    //This method for covering the code inside If
-    static testmethod void PageConfigPhotoUpload() {
-        CleanupTestData.createNeraTriggerCustomSetting();
+    //This method checks whether  one record inserted in to the Attachment object or not
+    //And checks whether Attachment field in Pageconfig object updated with AttachmentId or not 
+    static testmethod void pageConfigPhotoUpload(){
+
+        TestDataUtility.createNeraTriggerCustomSetting();
+        
         MobileDevice__c objMobileDevice = new MobileDevice__c(Name = 'IPadAir2', height__c = 1.5, width__c = 1.2);
         insert objMobileDevice;
         AppSettings__c objAppSettings = new AppSettings__c(Name = 'IPadAir2', mobileDevice__c = objMobileDevice.Id, AppVersion__c = 123.0);
@@ -36,8 +39,10 @@ private class TestEctrPageConfigcPhotoUpload {
     }
 
 //This Method for covering catch part
-    static testmethod void PageConfigPhotoUploadCatch() {
-        CleanupTestData.createNeraTriggerCustomSetting();
+    static testmethod void pageConfigPhotoUploadCatch(){
+
+        TestDataUtility.createNeraTriggerCustomSetting();
+        
         MobileDevice__c objMobileDevice = new MobileDevice__c(Name = 'IPadAir2', height__c = 1.5, width__c = 1.2);
         insert objMobileDevice;
         AppSettings__c objAppSettings = new AppSettings__c(Name = 'IPadAir2', mobileDevice__c = objMobileDevice.Id, AppVersion__c = 123.0);

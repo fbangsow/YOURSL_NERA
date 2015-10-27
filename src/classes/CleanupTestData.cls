@@ -200,30 +200,31 @@ public with sharing class CleanupTestData {
     }
     
     public static void createNeraTriggerCustomSetting(){
-		//Inserting NeraTriggerCustomSetting
-		List<NeraTriggerCustomSetting__c> listNeraTriggerCustomSetting = new List<NeraTriggerCustomSetting__c>();
-		
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountHashKey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountPriceBookMemberHashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountPromotionMemberHashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AppsettingPostDeployment', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'BusinessLogic', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'BusinessParameterLogic', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'EventHashKey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Organization', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'OrganizationAccountMember', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'OrganizationPromotionMemberHashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'PageConfig', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Pricebook2Hashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'ProductGroupHashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Product2Hashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'PromotionHashkey', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'UIControl', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'UIControlAttribute', IsActive__c = True));
-		listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'ValidateOverlapping', IsActive__c = True));
-		listNeraTriggerCustomSetting.add(new NeraTriggerCustomSetting__c(Name = 'VisitFrequency', IsActive__c = True));
-		
-		
-		insert listNeraTriggerCustomSetting;
-	}
+        //Inserting NeraTriggerCustomSetting
+        List<NeraTriggerCustomSetting__c> listNeraTriggerCustomSetting = new List<NeraTriggerCustomSetting__c>();
+        
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountHashKey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountPriceBookMemberHashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AccountPromotionMemberHashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'AppsettingPostDeployment', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'BusinessLogic', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'BusinessParameterLogic', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'EventHashKey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Organization', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'OrganizationAccountMember', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'OrganizationPromotionMemberHashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'PageConfig', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Pricebook2Hashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'ProductGroupHashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'Product2Hashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'PromotionHashkey', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'UIControl', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'UIControlAttribute', IsActive__c = True));
+        listNeraTriggerCustomSetting.add( new NeraTriggerCustomSetting__c(Name = 'ValidateOverlapping', IsActive__c = True));
+        listNeraTriggerCustomSetting.add(new NeraTriggerCustomSetting__c(Name = 'VisitFrequency', IsActive__c = True));
+        listNeraTriggerCustomSetting.add(new NeraTriggerCustomSetting__c(Name = 'OrgPotentialAvailability', IsActive__c = True));
+        listNeraTriggerCustomSetting.add(new NeraTriggerCustomSetting__c(Name = 'ValidateStorm', IsActive__c = True));
+
+        insert listNeraTriggerCustomSetting;
+    }
 }

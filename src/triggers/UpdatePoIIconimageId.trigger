@@ -11,12 +11,12 @@
  
 /************************************************************************************************
  * Trigger on UIcontrol__C
+ 
  ************************************************************************************************/
 
 trigger UpdatePoIIconimageId on UIControl__c (before insert,before update) 
 
 {
-if(NeraTriggerCustomSetting__c.getValues('UpdatePoIIconimageId').IsActive__c) {	
 set<Id> setPOItype = new Set<Id>();
 for(UIControl__c uiControl : trigger.new)
 {
@@ -27,10 +27,10 @@ Map<Id,POIType__c> mapPOIs = new Map<Id,POIType__c>([SELECT Id, Name,AttachmentI
 
 for(UIControl__c uiControl : trigger.new)
 {
-    if(mapPOIs!=null && mapPOIs.get(UiControl.PoiType__c)!=null)
-    	uiControl.PoiIconImageId__c= mapPOIs.get(UiControl.PoiType__c).AttachmentId__c;
+    if(mapPOIs.get(UiControl.PoiType__c)!=null)
+		uiControl.PoiIconImageId__c= mapPOIs.get(UiControl.PoiType__c).AttachmentId__c;
 }
 
-}
+
 
 }

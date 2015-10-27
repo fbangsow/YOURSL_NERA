@@ -1,3 +1,10 @@
+/*
+@Company:Your SL
+@Author:veera
+@Creation date:28/5/2015
+Reference: Ticket no 615
+*/
+
 public with sharing class EctrPoiheaderPhotoUpload {
 
         public Boolean displaying {get;set;}

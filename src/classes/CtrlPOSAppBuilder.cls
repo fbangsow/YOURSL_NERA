@@ -18,7 +18,8 @@ public with sharing class CtrlPOSAppBuilder {
   public String poitypeid {get; set;}
   public static List<Businessprocess__c> listbprocessparameters {get; set;}
   public static List<POIHeader__c> listPOIheader {get; set;} 
-  public static List<UIControlType__c> listUIcontroltype {get; set;} 
+  public static List<UIControlType__c> listUIcontroltype {get; set;}
+  public static List<PageConfigType__c> listPageConfigType {get; set;}
   
   // passing appsettings id to get the pageconfigs
   @RemoteAction
@@ -39,7 +40,7 @@ public with sharing class CtrlPOSAppBuilder {
 
     listappsettings = [SELECT id, name, mobileDevice__r.attachmentId__c, mobileDevice__r.height__c, mobileDevice__r.width__c, mobileDevice__r.xBezel__c,
                           mobileDevice__r.yBezel__c, mobileDevice__r.xFrame__c, mobileDevice__r.yFrame__c
-                          FROM AppSettings__c ];
+                          FROM AppSettings__c LIMIT 50000];
                          
     String mobileDevJSON = JSON.serializePretty(listappsettings);
 
@@ -54,12 +55,20 @@ public with sharing class CtrlPOSAppBuilder {
 
     return uitypejson;
   }
+  // get a PageConfigTypeId
+  @RemoteAction
+  public static String getPageConfigTypeId(){
 
+    listPageConfigType = [SELECT id, name FROM PageConfigType__c WHERE Name=:'POS'];
+    String uiPageconfigTypejson = JSON.serializePretty(listPageConfigType);
+
+    return uiPageconfigTypejson;
+  }
   //list of poitypes
   @RemoteAction
   public static String getPOITypeList(){
 
-    listPOIType = [SELECT id, name, attachmentId__c, (SELECT id, name FROM attachments) FROM POIType__c];
+    listPOIType = [SELECT id, name, attachmentId__c, (SELECT id, name FROM attachments) FROM POIType__c LIMIT 50000];
     String pOITypeListJSON = JSON.serializePretty(listPOIType);
 
     return pOITypeListJSON;
@@ -80,7 +89,7 @@ public with sharing class CtrlPOSAppBuilder {
   public static String getAuditQuestionTypeList() {
 
     listAuditQuestionTypes = [SELECT id, name, (SELECT id, name FROM AuditQuestions__r)
-                              FROM AuditQuestionType__c];
+                              FROM AuditQuestionType__c LIMIT 50000];
     String auditQuestionTypesJSON = JSON.serializePretty(listAuditQuestionTypes);
 
     return auditQuestionTypesJSON;
@@ -176,6 +185,7 @@ public with sharing class CtrlPOSAppBuilder {
       pageconfig.appSetting__c = listposwrapper.appsettingid;
     }
     upsert pageconfig;
+    
 
     Attachment attachment = new Attachment();
 
@@ -374,11 +384,12 @@ public with sharing class CtrlPOSAppBuilder {
     List<POIHeader__c>poiheder = new List<POIHeader__c>();
     List<POIQuestion__c>poiqustions = new List<POIQuestion__c>();
     List<POIBusinessMember__c> poiBusinessmember = new List<POIBusinessMember__c>();
-
+    List<AuditResult__c> poiAuditResult = new List<AuditResult__c>();
     List<UIControl__c>   listUIControl = [SELECT Id,
                                           (SELECT Id, Name FROM PosHeaders__r),
                                           (SELECT Id, Name FROM POIQuestions__r),
-                                          (SELECT Id FROM POIBusinessMembers__r)
+                                          (SELECT Id FROM POIBusinessMembers__r),
+                                          (SELECT Id FROM AuditResults__r)
                                           FROM  UIControl__c WHERE Id = :deleteobjulconrollwrapper.uiid];
 
     if (listUIControl != null && !listUIControl.isEmpty()){
@@ -394,20 +405,21 @@ public with sharing class CtrlPOSAppBuilder {
         if (!objUICon.POIBusinessMembers__r.isEmpty()){     
           poiBusinessmember.addAll(objUICon.POIBusinessMembers__r);     
         }
+        if (!objUICon.AuditResults__r.isEmpty()){     
+          poiAuditResult.addAll(objUICon.AuditResults__r);     
+        }
 
       }
     }
 
     Set<Id> idAuditQuestin = new Set<Id>();
     List<POIQuestion__c> lisPOIQuestions = [Select Id, name , uIControl__c, auditQuestion__c  FROM POIQuestion__c  WHERE Id IN :poiqustions];
-
+    
     for (POIQuestion__c objPOIQuest : lisPOIQuestions){
       idAuditQuestin.add(objPOIQuest.AuditQuestion__c);
     }
-
-
+    
     List<AuditQuestion__c> objAuditQuestion = [SELECT Id FROM AuditQuestion__c WHERE Id IN :idAuditQuestin];
-
     if (!objAuditQuestion.isEmpty()){
       Database.Delete(objAuditQuestion);
     }
@@ -419,6 +431,9 @@ public with sharing class CtrlPOSAppBuilder {
     }
     if (!poiBusinessmember.isEmpty()){      
       Database.Delete(poiBusinessmember);       
+    }
+    if (!poiAuditResult.isEmpty()){      
+      Database.Delete(poiAuditResult);       
     }
     if (!listUIControl.isEmpty()){
       Database.Delete(listUIControl);

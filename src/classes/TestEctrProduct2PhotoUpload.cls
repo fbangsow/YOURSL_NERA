@@ -4,17 +4,19 @@
 @Creation date      :12/06/2015
 @Reference          :
 */
-@IsTest
+@isTest
 private class TestEctrProduct2PhotoUpload {
 
-    //This method for covering the code inside if
-    static testmethod void Product2PhotoUpload() {
-        CleanupTestData.createNeraTriggerCustomSetting();
+    //This method checks whether  one record inserted in to the Attachment object or not
+    //And checks whether Attachment field in Product2 object updated with AttachmentId or not
+    static testmethod void product2PhotoUpload() {
+        
+        TestDataUtility.createNeraTriggerCustomSetting();
+        
         product2 objproduct2 = new product2(Name = 'Danone water');
         insert objproduct2;
         Attachment attach = new Attachment(Name = 'icon_login.svg', ParentId = objproduct2.Id, Body = blob.valueOf('Test attachment body'));
         insert attach;
-
         objproduct2.Image__C = attach.Id;
         update objproduct2;
 
@@ -31,14 +33,30 @@ private class TestEctrProduct2PhotoUpload {
         system.assertEquals(attach.Id, objproduct2.Image__C);
 
     }
-    //This method for covering catch
-    static testmethod void Product2PhotoUploadCatch() {
-        CleanupTestData.createNeraTriggerCustomSetting();
+    //This Method for covering Else part
+    static testmethod void product2PhotoUploadElse() {
+        TestDataUtility.createNeraTriggerCustomSetting();
         product2 objproduct2 = new product2(Name = 'Danone water');
         insert objproduct2;
         Attachment attach = new Attachment(Name = 'icon_login.svg', ParentId = objproduct2.Id, Body = blob.valueOf('Test attachment body'));
         insert attach;
+        objproduct2.Image__C = attach.Id;
+        update objproduct2;
 
+        ApexPages.StandardController sc = new ApexPages.StandardController(objproduct2);
+        EctrProduct2PhotoUpload objEctrProduct2PhotoUpload = new EctrProduct2PhotoUpload(sc);
+        objEctrProduct2PhotoUpload.attachfilename = attach.Name;
+        objEctrProduct2PhotoUpload.saveFile();
+        System.assertEquals(null, objEctrProduct2PhotoUpload.uploadImage);
+    }
+
+    //This method for covering catch
+    static testmethod void product2PhotoUploadCatch() {
+        TestDataUtility.createNeraTriggerCustomSetting();
+        product2 objproduct2 = new product2(Name = 'Danone water');
+        insert objproduct2;
+        Attachment attach = new Attachment(Name = 'icon_login.svg', ParentId = objproduct2.Id, Body = blob.valueOf('Test attachment body'));
+        insert attach;
         //objproduct2.Image__C = attach.Id;
         update objproduct2;
 

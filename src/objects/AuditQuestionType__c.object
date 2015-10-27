@@ -94,6 +94,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Minimum_value__c</fullName>
+        <externalId>false</externalId>
+        <label>Minimum value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>MultiSelectFields__c</fullName>
         <externalId>false</externalId>
         <label>MultiSelectFields</label>

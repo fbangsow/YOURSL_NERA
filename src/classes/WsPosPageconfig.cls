@@ -5,19 +5,21 @@
 Reference: Ticket no
 */
 
-@RestResource(urlMapping = '/SurveyExecutionData/*')
+@RestResource(urlMapping = '/POSData/*')
 
-global class WsPosPageconfig implements WsPos{
+global class WsPosPageconfig implements WsPos {
 
-  public static WsPosResponse  doReply(WsPosRequest request){
+  public static WsPosResponse  doReply(WsPosRequest request) {
     return new WsPosResponse ();
   }
 
   @HttpGet
-  global static void wsGet(){
+  global static void wsGet() {
 
+    //create Request
     WsPosRequest myRequest = new WsPosRequest(RestContext.request);
-    Map<Id, PageConfig__c> myPOSPages = getPOSPages();
+    // do businesslogic
+    Map<String, PageConfig__c> myPOSPages = getPOSPages();
     List<POSPageDataWrapper> dataSet =  getDataSet(myPOSPages);
 
     RestContext.response.responseBody = Blob.valueOf(JSON.serialize(dataSet));
@@ -25,62 +27,88 @@ global class WsPosPageconfig implements WsPos{
     RestContext.response.addHeader('Content-Type', 'application/json');
   }
 
-  public static List<POSPageDataWrapper> getDataSet(Map<Id, PageConfig__c> myPOSPages){
 
+  public static List<POSPageDataWrapper> getDataSet(Map<String, PageConfig__c> myPOSPages) {
     List<POSPageDataWrapper> dataSet = new List<POSPageDataWrapper>();
-    Map<Id, UIControl__c> mapPOIs = getPOIs(myPOSPages.keySet());
-    Map<Id, POIHeader__c> mapPOIsHeaders = getPOIsHeaders(mapPOIs.keySet());
-    Map<Id, POIQuestion__c> mapPOIQuestions = getPOIAuditQuestions(mapPOIs.keySet());
 
-    for (Id posPageId : myPOSPages.keySet()){
+    Set<String> setPosPageIds = new Set<String> ();
+    for (String posPageId : myPOSPages.keySet()) {
+      setPosPageIds.add(posPageId);
+    }
+
+    Map<String, UIControl__c> mapPOIs = getPOIs(setPosPageIds);
+    Set<String> setPoiIds = new Set<String> ();
+    for (String poiId : mapPOIs.keySet()) {
+      setPoiIds.add(poiId);
+    }
+
+    Map<String, POIHeader__c> mapPOIsHeaders = getPOIsHeaders(setPoiIds);
+    Set<String> setPoiHeaderIds = new Set<String> ();
+    for (String poiHeaderId : mapPOIsHeaders.keySet()) {
+      setPoiHeaderIds.add(poiHeaderId);
+    }
+    Map<String, POIQuestion__c> mappoiQuestion = new  Map<String, POIQuestion__c>();
+    Map<String, POIQuestion__c> mapPOIQuestions = getPOIAuditQuestions(setPoiIds);
+    Set<String> setPoiQuestionIds = new Set<String> ();
+    for (String poiQuestionId : mapPOIQuestions.keySet()) {
+      setPoiQuestionIds.add(poiQuestionId);
+    }
+    for (POIQuestion__c poiQuestion : mapPOIQuestions.values()) {
+      mappoiQuestion.put(poiQuestion.UIControl__r.Id, poiQuestion);
+    }
+
+    for (String posPageId : setPosPageIds) {
       POSPageDataWrapper myCurrentPosPage = new POSPageDataWrapper(myPOSPages.get(posPageId));
       List<POIWrapper> listPOI = new List<POIWrapper>();
-      for (Id poiId : mapPOIs.keySet()){
-        List<POIQuestionsWrapper> listPOIQuestions;
-        POIWrapper poi = new POIWrapper(mapPOIs.get(poiId));
-        if (poi.posPageId == posPageId){
-          listPOIQuestions = new List<POIQuestionsWrapper>();
-          for (Id poiHeaderId : mapPOIsHeaders.keySet()){
-            POIHeaderWrapper objPoiHeader = new POIHeaderWrapper(mapPOIsHeaders.get(poiHeaderId));
-            if (objPoiHeader.poiId == poiId){
-              poi.poiHeader = objPoiHeader;
-              break;
+      for (String poiId : mapPOIs.keySet()) {
+        if (mappoiQuestion.containsKey(poiId)) {
+          List<POIQuestionsWrapper> listPOIQuestions;
+          POIWrapper poi = new POIWrapper(mapPOIs.get(poiId));
+          if (poi.posPageId == posPageId) {
+            listPOIQuestions = new List<POIQuestionsWrapper>();
+            for (String poiHeaderId : mapPOIsHeaders.keySet()) {
+              POIHeaderWrapper objPoiHeader = new POIHeaderWrapper(mapPOIsHeaders.get(poiHeaderId));
+              if (objPoiHeader.poiId == poiId) {
+                poi.poiHeader = objPoiHeader;
+                break;
+              }
             }
-          }
 
-          for (Id poiQuestionId : mapPOIQuestions.keySet()){
-            POIQuestionsWrapper poiQuestion = new POIQuestionsWrapper(mapPOIQuestions.get(poiQuestionId));
-            if (poiQuestion.poiId == poiId) {
-              listPOIQuestions.add(poiQuestion);
+            for (String poiQuestionId : mapPOIQuestions.keySet()) {
+              POIQuestionsWrapper poiQuestion = new POIQuestionsWrapper(mapPOIQuestions.get(poiQuestionId));
+              if (poiQuestion.poiId == poiId  ) {
+                listPOIQuestions.add(poiQuestion);
+              }
             }
+            poi.poiQuestions = listPOIQuestions;
+            listPOI.add(poi);
           }
-          poi.poiQuestions = listPOIQuestions;
-          listPOI.add(poi);
         }
+
       }
+
       myCurrentPosPage.pois = listPOI;
       dataSet.add(myCurrentPosPage);
     }
     return dataSet;
   }
 
-  public static Map<Id, PageConfig__c> getPOSPages(){
-
-    return new Map<Id, PageConfig__c>([SELECT Id, Name, IsActive__c
+  public static Map<String, PageConfig__c> getPOSPages() {
+    //return new Map<String, PageConfig__c>([SELECT Id, Name, IsActive__c
+    //                                       From  PageConfig__c ]);
+    return new Map<String, PageConfig__c>([SELECT Id, Name, IsActive__c
                                            From  PageConfig__c
                                            WHERE IsActive__c = true and
                                                PageConfigTypeId__r.Name = 'POS']);
   }
 
-  public class POSPageDataWrapper{
-
+  public class POSPageDataWrapper {
     public Id posPageConfigId;
     public String posPageConfigName;
     public String isActive {get; set;}
     public List<POIWrapper> pois {get; set;}
 
-    public POSPageDataWrapper(PageConfig__c posPageConfig){
-
+    public POSPageDataWrapper(PageConfig__c posPageConfig) {
       posPageConfigId = posPageConfig.Id;
       posPageConfigName = posPageConfig.Name;
       isActive = String.valueOf(posPageConfig.IsActive__c);
@@ -88,25 +116,26 @@ global class WsPosPageconfig implements WsPos{
     }
   }
 
-  public static Map<Id, UIControl__c> getPOIs(Set<Id> setPageConfigIds){
+  public static Map<String, UIControl__c> getPOIs(Set<String> setPageConfigIds) {
 
-    return new Map<Id, UIControl__c>([SELECT  Id, Name,
-                                                  Image__c,
-                                                  PageConfigName__r.Id,
-                                                  PageConfigName__r.Name,
-                                                  POIType__r.Id,
-                                                  POIType__r.Name,
-                                                  POIType__r.HasWeightage__c,
-                                                  POIType__r.Weightage__c,
-                                                  POIType__r.AttachmentId__c,
-                                                  UIControlTypeId__r.Name
+
+    return new Map<String, UIControl__c>([SELECT  Id, Name,
+                                          Image__c,
+                                          PageConfigName__r.Id,
+                                          PageConfigName__r.Name,
+                                          POIType__r.Id,
+                                          POIType__r.Name,
+                                          POIType__r.HasWeightage__c,
+                                          POIType__r.Weightage__c,
+                                          POIType__r.AttachmentId__c,
+                                          UIControlTypeId__r.Name
                                           From UIControl__c
                                           WHERE PageConfigName__r.Id IN: setPageConfigIds and
                                           UIControlTypeId__r.Name = 'POI']);
+
   }
 
-  public class POIWrapper{
-
+  public class POIWrapper {
     public Id poiId;
     public String poiName;
     public String posPageId;
@@ -117,9 +146,7 @@ global class WsPosPageconfig implements WsPos{
     public Decimal poiTypeWeightage;
     public POIHeaderWrapper poiHeader;
     public List<POIQuestionsWrapper> poiQuestions;
-
-    public POIWrapper(UIControl__c poi){
-
+    public POIWrapper(UIControl__c poi) {
       poiId = poi.Id;
       poiName = poi.Name;
       posPageId = poi.PageConfigName__r.Id;
@@ -128,21 +155,20 @@ global class WsPosPageconfig implements WsPos{
       poiTypeName = poi.POIType__r.Name;
       poiTypeHasWeightage = poi.POIType__r.HasWeightage__c;
       poiTypeWeightage = poi.POIType__r.Weightage__c;
+
     }
   }
 
-  public class POIHeaderWrapper{
-  
+  public class POIHeaderWrapper {
     public Id poiHeaderId;
     public String poiHeaderName;
     public String poiId;
     public String poiName;
     public String poiHeaderTitle;
+    public String poiHeadersubtitle;
     public String poiHeaderDescription;
     public String poiPopupHeaderImage;
-
-    public POIHeaderWrapper(POIHeader__c poiHeader){
-
+    public POIHeaderWrapper(POIHeader__c poiHeader) {
       poiHeaderId = poiHeader.Id;
       poiHeaderName = poiHeader.Name;
       poiId = poiHeader.UIControl__r.Id;
@@ -150,43 +176,43 @@ global class WsPosPageconfig implements WsPos{
       poiHeaderTitle = poiHeader.Name;
       poiHeaderDescription = poiHeader.Description__c;
       poiPopupHeaderImage = poiHeader.AttachmentId__c;
+      poiHeadersubtitle = poiHeader.SubTitle__c;
     }
   }
 
-  public static Map<Id, POIHeader__c> getPOIsHeaders(Set<Id> setPoiIds){
+  public static Map<String, POIHeader__c> getPOIsHeaders(Set<String> setPoiIds) {
 
-    return new Map<Id, POIHeader__c>([SELECT Id, Name, AttachmentId__c,
-                                                 Description__c,
-                                                 UIControl__r.Id,
-                                                 UIControl__r.Name
+    return new Map<String, POIHeader__c>([SELECT Id, Name, AttachmentId__c,SubTitle__c,
+                                          Description__c,
+                                          UIControl__r.Id,
+                                          UIControl__r.Name
                                           FROM POIHeader__c
                                           WHERE UIControl__r.Id IN: setPoiIds]);
   }
 
-  public static Map<Id, POIQuestion__c> getPOIAuditQuestions(Set<Id> setPoiIds){
+  public static Map<String, POIQuestion__c> getPOIAuditQuestions(Set<String> setPoiIds) {
 
-    return new Map<Id, POIQuestion__c>([SELECT  Id, Name, IsMandatory__c,
-                                                    UIControl__r.Id,
-                                                    UIControl__r.Name,
-                                                    AuditQuestion__r.Id,
-                                                    AuditQuestion__r.AuditQuestionType__r.Name,
-                                                    AuditQuestion__r.AuditQuestionType__r.MinimumValue__c,
-                                                    AuditQuestion__r.AuditQuestionType__r.MaximumValue__c,
-                                                    AuditQuestion__r.AuditQuestionType__r.Step__c,
-                                                    AuditQuestion__r.AuditQuestionType__r.Weightage__c,
-                                                    AuditQuestion__r.AuditQuestionType__r.HasWeightage__c,
-                                                    AuditQuestion__r.Description__c,
-                                                    AuditQuestion__r.Potential__c
+    return new Map<String, POIQuestion__c>([SELECT   Id, Name, IsMandatory__c,
+                                            UIControl__r.Id,
+                                            UIControl__r.Name,
+                                            AuditQuestion__r.Id,
+                                            AuditQuestion__r.AuditQuestionType__r.Name,
+                                            AuditQuestion__r.MaximumValue__c,
+                                            AuditQuestion__r.AuditQuestionType__r.Step__c,
+                                            AuditQuestion__r.AuditQuestionType__r.Weightage__c,
+                                            AuditQuestion__r.AuditQuestionType__r.HasWeightage__c,
+                                            AuditQuestion__r.Description__c,
+                                            AuditQuestion__r.Potential__c
                                             FROM POIQuestion__c
-                                            WHERE UIControl__r.Id =: setPoiIds]);
+                                            WHERE UIControl__r.Id = : setPoiIds]);
   }
 
-  public class POIQuestionsWrapper{
-
+  public class POIQuestionsWrapper {
     public Id poiQuestionId;
     public String poiQuestionName;
-    public Boolean isMandatory;
+    Public Boolean IsMandatory;
     public String poiId;
+    // public String poipotential;
     public String poiName;
     public String questionTypeName;
     public Decimal questionTypeMinValue;
@@ -196,17 +222,17 @@ global class WsPosPageconfig implements WsPos{
     public String questionPotential;
     public Decimal questionTypeWeightage;
     public Boolean questionTypeHasWeightage;
-
-    public POIQuestionsWrapper(POIQuestion__c poiQuestion){
-   
+    public POIQuestionsWrapper(POIQuestion__c poiQuestion) {
       poiQuestionId = poiQuestion.AuditQuestion__r.Id;
       poiQuestionName = poiQuestion.Name;
-      isMandatory = poiQuestion.IsMandatory__c;
+      IsMandatory = poiQuestion.IsMandatory__c;
       poiId = poiQuestion.UIControl__r.Id;
       poiName = poiQuestion.UIControl__r.Name;
       questionTypeName = poiQuestion.AuditQuestion__r.AuditQuestionType__r.Name;
-      questionTypeMinValue = poiQuestion.AuditQuestion__r.AuditQuestionType__r.MinimumValue__c;
-      questionTypeMaxValue = poiQuestion.AuditQuestion__r.AuditQuestionType__r.MaximumValue__c;
+      //questionTypeMinValue = poiQuestion.AuditQuestion__r.AuditQuestionType__r.MinimumValue__c;
+      questionTypeMinValue = 0;
+      //questionTypeMaxValue = poiQuestion.AuditQuestion__r.AuditQuestionType__r.MaximumValue__c;
+      questionTypeMaxValue = poiQuestion.AuditQuestion__r.MaximumValue__c;
       questionTypeStepValue = poiQuestion.AuditQuestion__r.AuditQuestionType__r.Step__c;
       questionDecription = poiQuestion.AuditQuestion__r.Description__c;
       questionPotential = poiQuestion.AuditQuestion__r.Potential__c;

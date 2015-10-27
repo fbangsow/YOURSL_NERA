@@ -18,8 +18,8 @@ global class WsPriceBookEntries implements UcbWs {
         UcbWsRequest myRequest = new UcbWsRequest(RestContext.request);
         List<PriceBookEntryWrapper> listPriceBookEntryWrapper = getPriceBookentries();
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(listPriceBookEntryWrapper));      
-    RestContext.response.addHeader('size', String.valueOf(listPriceBookEntryWrapper.size()));
-    RestContext.response.addHeader('Content-Type', 'application/json'); 
+        RestContext.response.addHeader('size', String.valueOf(listPriceBookEntryWrapper.size()));
+        RestContext.response.addHeader('Content-Type', 'application/json'); 
     }
     
     public static List<PriceBookEntryWrapper> getPriceBookentries(){
@@ -31,7 +31,7 @@ global class WsPriceBookEntries implements UcbWs {
                                                           UseStandardPrice,Pricebook2.Name,
                                                           Pricebook2Id,IsCan__c,Quantity__c,Description__c,
                                                           IsMandatoryForCooler__c,Product2.Image__c,
-                                                          Nan__c,Delivery__c,Display__c,Unit__c,
+                                                          Nan__c,Delivery__c,Display__c,Unit__c,IsSoldOut__c,
                                                           LastModifiedDate,CreatedDate
                                                     FROM PricebookEntry 
                                                     WHERE IsActive = true
@@ -53,15 +53,16 @@ global class WsPriceBookEntries implements UcbWs {
         public String unitPrice;
         public String useStandardPrice;
         public String priceBook2Id;
-        public String can;
+        public String iscan;
         public String image;
         public Decimal quantity;
-        public Boolean mandatoryForCooler;
-        public Boolean freeOfCharge;
-        public Boolean sampleWare;
+        public Boolean ismandatoryForCooler;
+        public Boolean isfreeOfCharge;
+        public Boolean issampleWare;
         public Datetime lastModifiedDateTime;
         public Datetime  createdDateTime;
         public String description;
+        public Boolean issoldOut;
         public Decimal nan;
         public Date delivery;
         public String display;
@@ -75,15 +76,16 @@ global class WsPriceBookEntries implements UcbWs {
             this.isActive = String.valueOf(myPriceBookentry.IsActive);
             this.product2Id = myPriceBookentry.Product2Id;
             this.productCode = myPriceBookentry.ProductCode;
+            this.issoldOut = myPriceBookentry.IsSoldOut__c;
             this.unitPrice = String.valueOf(myPriceBookentry.UnitPrice);
             this.useStandardPrice = String.valueOf(myPriceBookentry.UseStandardPrice);
             this.priceBook2Id = myPriceBookentry.Pricebook2Id;
-            this.can = String.valueof(myPriceBookentry.IsCan__c);
+            this.iscan = String.valueof(myPriceBookentry.IsCan__c);
             this.image = myPriceBookentry.Product2.Image__c;
             this.description = myPriceBookentry.Description__c;
-            this.mandatoryForCooler = myPriceBookentry.IsMandatoryForCooler__c;
-            this.freeOfCharge = myPriceBookentry.IsFreeOfCharge__c;
-            this.sampleWare = myPriceBookentry.IsSampleWare__c;
+            this.ismandatoryForCooler = myPriceBookentry.IsMandatoryForCooler__c;
+            this.isfreeOfCharge = myPriceBookentry.IsFreeOfCharge__c;
+            this.issampleWare = myPriceBookentry.IsSampleWare__c;
             this.nan = myPriceBookentry.Nan__c;
             this.delivery = myPriceBookentry.Delivery__c;
             this.display = myPriceBookentry.Display__c;

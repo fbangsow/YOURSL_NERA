@@ -1,208 +1,100 @@
 /*
 @Company:Your SL
 @Author:Pavan
-@Creation date:26/6/2015
-@Reference: Ticket no 438
+@Creation date:19/8/2015
+@Reference: 
 */
 @RestResource(urlMapping = '/Promotions/*')
-
 global class WsPromotions implements UcbWs {
 
-	public static UcbWsResponse doReply(UcbWsRequest request) {
-		return new UcbWsResponse();
-	}
+    public static UcbWsResponse doReply(UcbWsRequest request){
+        return new UcbWsResponse();
+    }
 
-	static List<Account> listAccounts;
-	@HttpGet
-	global static void wsGet() {
-        //create request
-		UcbWsRequest myRequest = new UcbWsRequest(RestContext.request);
-		String strAccounts = '';
+    @HttpGet
+    global static void wsGet(){
 
-		if(myRequest.resquestedByUser != null) 
-		{
-			strAccounts = RestContext.request.params.get('accounts');
-			System.debug('@@@In Get : accountIds Json From Request Param is' + strAccounts);
+        UcbWsRequest myRequest = new UcbWsRequest(RestContext.request);
+        List<PromotionWrapper> listPromotions = getPromotions();
+        RestContext.response.responseBody = Blob.valueOf(JSON.serialize(listPromotions));           
+        RestContext.response.addHeader('size', String.valueOf(listPromotions.size()));
+        RestContext.response.addHeader('Content-Type', 'application/json'); 
+    }  
+    
+    public static List<PromotionWrapper> getPromotions(){
 
-			//If there are no accounts in the request, Exit from the method.
-			if(String.isEmpty(strAccounts))
-			{
-				return;
-			}
+        //Map<ID,ID> mapPromoAttIds = new Map<ID,ID>();
+        Map<Id,List<Id>> mapaprentatt = new Map<Id,List<Id>>();
+        List<Id> attIds = new List<ID>();
+        
+        List<Promotion__c> listPromotions =  [SELECT Id,Name,AttachmentId__c,
+                                                        StartDate__c,EndDate__c,ActionValidityEndDate__c,ActionValidityStartDate__c,
+                                                        LastModifiedDate,Description__c,SellingValidityStartDate__c,SellingValidityEndDate__c,
+                                                        CreatedDate
+                                              FROM Promotion__c];
 
-			List<AccountPromotionsWrapper> accountPromotionsList;
-			listAccounts = getAccountsFromRequest(strAccounts);
-			if(!listAccounts.isEmpty()) 
-			{
-					accountPromotionsList = new List<AccountPromotionsWrapper>();
-					List<OrganizationWrapper> listOrganizations = getOrganizationsForAccounts(listAccounts);
-					List<OrganizationPromotionsWrapper> listOrganizationPromotions = getOrganizationPromotions(listOrganizations);
-					List<AccountDirectPromotionsWrapper> listAccountsPromotions = getAccountsPromotions(listAccounts);
-					List<PromotionWrapper> listPromotions;
-					Set<Id> setPromotionIds;
-					for(Account account : listAccounts)
-					{
-						AccountPromotionsWrapper accountPromotionsWrapper = new AccountPromotionsWrapper();
-						accountPromotionsWrapper.AccountId = account.Id;
-						listPromotions = new List<PromotionWrapper>();
-						setPromotionIds = new Set<Id>();
+        for(Promotion__c promo:listPromotions){
 
-						//Getting promotions of account based on organization it belongs
-						for(OrganizationWrapper organization : listOrganizations)
-						{
-							if(organization.AccountId == account.Id)
-							{
-								for(OrganizationPromotionsWrapper orgPromotions : listOrganizationPromotions)
-								{
-									if(orgPromotions.OrganizationId == organization.OrganizationId)
-									{
-									    setPromotionIds.add(orgPromotions.PromotionId);
-									}
-								}
-							}
-						}
-						
-						//Getting promotions of account, Which are directly defined on accounts
-						for(AccountDirectPromotionsWrapper accountDirectPromotion : listAccountsPromotions)
-						{
-							if(accountDirectPromotion.AccountId == account.Id)
-							{
-								setPromotionIds.add(accountDirectPromotion.PromotionId);				
-							}
-						}
+           // mapPromoAttIds.put(promo.id, promo.AttachmentId__c);
+           attIds.add(promo.AttachmentId__c);
 
-						for(Id promotionId : setPromotionIds)
-						{
-							PromotionWrapper promotion = getPromotion(promotionId);
-							listPromotions.add(promotion);	
-						}
+        }                                      
+                                              
+        
+        
+        for(Attachment att:[SELECT Id,Name,body,parentId FROM Attachment WHERE parentId IN:listPromotions AND Id NOT IN:attIds]){
+            If(att.parentId!=NULL){
+                IF(!mapaprentatt.containskey(att.parentId)){
+                    mapaprentatt.Put(att.parentId,new List<Id>());
+                }
+                mapaprentatt.get(att.parentId).add(att.id);
+                
+            }
+        }
+        
+        List<PromotionWrapper> listPromotion = new List<PromotionWrapper>();
+        for(Promotion__c myPromotion:listPromotions){
+            
+            PromotionWrapper promotionWrapper = new PromotionWrapper(myPromotion,mapaprentatt.containskey(myPromotion.id)? mapaprentatt.get(myPromotion.id):NULL);
+            listPromotion.add(promotionWrapper);
+        }
+        return listPromotion;
 
-						accountPromotionsWrapper.Promotions = listPromotions;
-						accountPromotionsList.add(accountPromotionsWrapper);
-					}	
+    }
 
-					RestContext.response.responseBody = Blob.valueOf(JSON.serialize(accountPromotionsList));
-				    RestContext.response.addHeader('size', String.valueOf(accountPromotionsList.Size()));
-		        }  
-		        else  //Accounts List is Empty
-		        {
-					RestContext.response.addHeader('size', '0');
-			    }
+    public class PromotionWrapper{
 
-				RestContext.response.statusCode = 200;
-		} 
-		else //Requested By User is NULL
-		{
-			RestContext.response.addHeader('errorMessage' , myRequest.errorMessage);
-			RestContext.response.statusCode = myRequest.statusCode;
-		}
-		RestContext.response.addHeader('Content-Type', 'application/json');
-	}
-			
-	public static List<Account> getAccountsFromRequest(String accountIDs) {
+        public String promotionid {get;set;}
+        public String promotionname {get; set;}
+        public String image;
+        public Datetime lastModifiedDateTime;
+        public Datetime  createdDateTime;
+        public Date startDate;
+        public Date endDate;
+        public Date actionValidityStartDate;
+        public Date actionValidityEndDate;
+        public Date sellingValidityStartDate;
+        public Date sellingValidityEndDate;
+        public String Description;  
+        public List<Id> pdfattid;
 
-		List<Account> lstAccounts = new List<Account>();
-		List<Id> lLstAccountIDs = (List<Id>) JSON.deserialize(accountIDs, List<Id>.class);
-		return  [SELECT Id 
-		         FROM Account 
-		         WHERE Id IN: lLstAccountIDs];
-		
-	}
+        public PromotionWrapper(Promotion__c myPromotion,List<id> attid){
 
-	public static List<OrganizationWrapper> getOrganizationsForAccounts(List<Account> lstAccounts) {
-
-		List<OrganizationWrapper> listOrganizations = new List<OrganizationWrapper>();
-		List<OrganizationAccountMember__c> listOrgAccounts = [SELECT Account__c,Organization__c
-													          FROM OrganizationAccountMember__c 
-													          WHERE Account__c IN: lstAccounts];
-		for(OrganizationAccountMember__c member : listOrgAccounts )
-		{
-			OrganizationWrapper organization = new OrganizationWrapper();
-			organization.OrganizationId = member.Organization__c;
-			organization.AccountId = member.Account__c;
-			listOrganizations.add(organization);
-		}	
-		return listOrganizations;
-	}
-
-	public static List<OrganizationPromotionsWrapper> getOrganizationPromotions(List<OrganizationWrapper> listOrganizations) {
-		Set<Id> setOrganizations = new Set<Id>();
-		for(OrganizationWrapper org : listOrganizations)
-		{
-			setOrganizations.add(org.OrganizationId);
-		}
-
-		List<OrganizationPromotionsWrapper> listOrganizationPromotions = new List<OrganizationPromotionsWrapper>();
-		List<OrganizationPromotionMember__c> listOrgPromotions = [SELECT Organization__c,Promotion__c
-		                                                          FROM OrganizationPromotionMember__c 
-		                                                          WHERE Organization__c IN: setOrganizations];
-
-		for(OrganizationPromotionMember__c member : listOrgPromotions )
-		{
-			OrganizationPromotionsWrapper organizationPromotion = new OrganizationPromotionsWrapper();
-			organizationPromotion.OrganizationId = member.Organization__c;
-			organizationPromotion.PromotionId = member.Promotion__c;
-			listOrganizationPromotions.add(organizationPromotion);
-		}		
-		return listOrganizationPromotions;
-	}
-
-	public static List<AccountDirectPromotionsWrapper> getAccountsPromotions(List<Account> lstAccounts) {
-
-		List<AccountDirectPromotionsWrapper> listAccountsPromotions = new List<AccountDirectPromotionsWrapper>();
-		List<AccountPromotionMember__c> listAccountsPromotionsMember = [SELECT Account__c,Promotion__c
-		                                                                FROM AccountPromotionMember__c 
-		                                                                WHERE Account__c IN: lstAccounts];
-
-		for(AccountPromotionMember__c member : listAccountsPromotionsMember)
-		{
-			AccountDirectPromotionsWrapper accountsPromotions = new AccountDirectPromotionsWrapper();
-			accountsPromotions.AccountId = member.Account__c;
-			accountsPromotions.PromotionId = member.Promotion__c;
-			listAccountsPromotions.add(accountsPromotions);
-		}		
-		return listAccountsPromotions;
-	}
-
-	public static PromotionWrapper getPromotion(String strPromotionId) {
-		Promotion__c promotionMember = [SELECT Id, Name,StartDate__c,EndDate__c
-		                                FROM Promotion__c 
-		                                WHERE Id =: strPromotionId];
-		         
-		PromotionWrapper promotion = new PromotionWrapper();
-		promotion.PromotionId = promotionMember.Id;
-		promotion.PromotionName = promotionMember.Name;
-		promotion.StartDate = promotionMember.StartDate__c;
-		promotion.EndDate = promotionMember.EndDate__c;
-		return promotion;
-	}
-
-	public class AccountPromotionsWrapper {
-		public Id accountId {get; set;}
-		public List<PromotionWrapper> promotions {get; set;}
-	}
-
-	public class OrganizationWrapper {
-		public Id organizationId {get; set;}
-		public Id accountId {get; set;}				
-	}
-
-	public class OrganizationPromotionsWrapper {
-		public Id organizationId {get; set;}	
-		public Id promotionId	{get; set;}		
-	}
-
-	public class AccountDirectPromotionsWrapper {
-
-		public Id accountId {get; set;}
-		public Id promotionId {get; set;}
-	}
-
-	public class PromotionWrapper {
-		public Id promotionId {get; set;}		
-		public String promotionName {get; set;}	
-		public Date startDate {get; set;}
-		public Date endDate {get; set;}
-	}
-
+            this.promotionid = myPromotion.Id;
+            this.promotionname = myPromotion.Name;
+            this.image = myPromotion.AttachmentId__c;
+            this.lastModifiedDateTime = myPromotion.LastModifiedDate;
+            this.createdDateTime = myPromotion.CreatedDate;
+            this.startDate = myPromotion.StartDate__c;
+            this.endDate = myPromotion.EndDate__c;
+            this.Description = myPromotion.Description__c;
+            this.sellingValidityEndDate = myPromotion.SellingValidityEndDate__c;
+            this.sellingValidityStartDate = myPromotion.SellingValidityStartDate__c;
+            this.actionValidityEndDate = myPromotion.ActionValidityEndDate__c;
+            this.actionValidityStartDate = myPromotion.ActionValidityStartDate__c;
+            this.pdfattid = attid;
+            
+        }
+    }
+    
 }

@@ -54,6 +54,25 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>EndDate__c</fullName>
+        <externalId>false</externalId>
+        <label>EndDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+
+    <fields>
+        <fullName>Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Image</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+ <fields>
         <fullName>AttachmentId__c</fullName>
         <externalId>false</externalId>
         <label>AttachmentId</label>
@@ -71,6 +90,37 @@
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
+    <fields>
+        <fullName>ParentGroup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>ParentGroup</label>
+        <referenceTo>ProductGroup__c</referenceTo>
+        <relationshipLabel>ProductGroups</relationshipLabel>
+        <relationshipName>ProductGroups</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Piece__c</fullName>
+        <externalId>false</externalId>
+        <label>Piece</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>StartDate__c</fullName>
+        <externalId>false</externalId>
+        <label>StartDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
     <label>ProductGroup</label>
     <listViews>
         <fullName>All</fullName>
@@ -78,7 +128,7 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Name</label>
+        <label>ProductGroup Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>ProductGroups</pluralLabel>

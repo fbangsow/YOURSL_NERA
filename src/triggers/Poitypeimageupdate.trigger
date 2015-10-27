@@ -11,11 +11,11 @@
  
 /************************************************************************************************
  * Trigger on UIcontrol__C
+ 
  ************************************************************************************************/
 trigger Poitypeimageupdate on POIType__c (after update) 
 {
 
-if(NeraTriggerCustomSetting__c.getValues('Poitypeimageupdate').IsActive__c) {
 
 //List<UiControls__c> ListUicontol = new List<UiControls__c>();
 Set<Id> setPOIids = new Set<Id>();
@@ -29,5 +29,5 @@ Map<Id,UIControl__c> mapUiControls = new Map<Id,UIControl__c>([SELECT Id,PoiIcon
 
 If(!mapUiControls.values().isEmpty())
     update mapUiControls.values();
-}
+
 }

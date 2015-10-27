@@ -27,6 +27,7 @@
         <members>AccountPotentialMember__c</members>
         <members>AccountPriceBookMember__c</members>
         <members>AccountPromotionMember__c</members>
+        <members>AccountSecondaryPlacementMember__c</members>
         <members>AccountTalonMember__c</members>
         <members>Activity</members>
         <members>AppErrorLog__c</members>
@@ -41,6 +42,8 @@
         <members>Businessprocess__c</members>
         <members>Campaign</members>
         <members>CampaignMember</members>
+        <members>CampaignMember__c</members>
+        <members>Campaigns__c</members>
         <members>Case</members>
         <members>CaseContactRole</members>
         <members>ConsumerProductStockStatus__c</members>
@@ -52,8 +55,6 @@
 		<members>GVLAssignment__c</members>
 		<members>OrganizationPriceBook__c</members>
 		<members>POSMAssignment__c</members>
-		<members>PosProductGroup__c</members>
-        <members>DandBCompany</members>
         <members>DiscardedProduct__c</members>
         <members>DuplicateRecordItem</members>
         <members>Event</members>
@@ -68,7 +69,7 @@
         <members>MacroInstruction</members>
         <members>MobileDevice__c</members>
         <members>NeraDefaultValue__c</members>
-		 <members>NeraTriggerCustomSetting__c</members>
+        <members>NeraTriggerCustomSetting__c</members>
         <members>Opportunity</members>
         <members>OpportunityCompetitor</members>
         <members>OpportunityContactRole</members>
@@ -81,23 +82,23 @@
         <members>OrderMonthly__c</members>
         <members>OrderWeekly__c</members>
         <members>OrganizationAccountMember__c</members>
-        <members>OrganizationPosMember__c</members>     
+        <members>OrganizationPosMember__c</members>  
+		<members>OrganizationSecondaryPlacementMember__c</members>  
         <members>OrganizationPotentialAvailability__c</members>
         <members>OrganizationPriceBookMember__c</members>
         <members>OrganizationPromotionMember__c</members>
         <members>OrganizationTalonMember__c</members>
         <members>Organization__c</members>
-        <members>POIRestunt__c</members>
         <members>POIBusinessMember__c</members>
         <members>POIDeviceType__c</members>
         <members>POIDevice__c</members>
         <members>POIHeader__c</members>
         <members>POIQuestion__c</members>    
-        <members>POITypeResult__c</members>
         <members>POIType__c</members>
         <members>PageConfigType__c</members>
         <members>PageConfig__c</members>
         <members>PartnerRole</members>
+        <members>PosAccountPrice__c</members>
         <members>PotentialPriceBookMember__c</members>
         <members>Potential__c</members>    
         <members>PriceBookEntryMember__c</members>
@@ -113,6 +114,9 @@
         <members>PromotionMember__c</members>
         <members>Promotion__c</members>
         <members>SelectedProduct__c</members>
+        <members>QuestionTypeAttribute__c</members>
+        <members>SecondaryPlacementFilling__c</members>
+        <members>SecondaryPlacement__c</members>
         <members>Site</members>
         <members>Solution</members>
         <members>StreamingChannel</members>

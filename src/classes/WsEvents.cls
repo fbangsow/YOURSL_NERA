@@ -100,7 +100,7 @@ global class WsEvents implements UcbWs {
     
     public static Map<id, Event> getEvents(Id owner) {
 
-        string queryString = 'SELECT AccountId, ActivityDate, ActivityDateTime,Status__c, CreatedById, CreatedDate, Description, EndDateTime, GroupEventType, Id, IsAllDayEvent, IsDeleted, LastModifiedById,LastModifiedDate, Location, OwnerId, StartDateTime, Subject, WhatId, WhoId FROM Event WHERE OwnerId = :owner';
+        string queryString = 'SELECT AccountId, ActivityDate, ActivityDateTime,Status__c, isTimeNeeded__c, CreatedById, CreatedDate, Description, EndDateTime, GroupEventType, Id, IsAllDayEvent, IsDeleted, LastModifiedById,LastModifiedDate, Location, OwnerId, StartDateTime, Subject, WhatId, WhoId FROM Event WHERE OwnerId = :owner';
         
         if (RestContext.request.params.get('eventDate') != null) {
             queryString = queryString + 'and ActivityDate = :forDate';
@@ -126,7 +126,8 @@ global class WsEvents implements UcbWs {
                     Id = item.Id,
                     WhoId = item.WhoId,
                     Subject = item.Subject,
-                    Status__c= item.status
+                    Status__c= item.status,
+                    isTimeNeeded__c = item.isTimeNeeded
                 );
                 listUpdateEvents.add(itrEvent);
             }
@@ -152,7 +153,8 @@ global class WsEvents implements UcbWs {
                     EndDateTime = Datetime.valueOf(item.EndDateTime),
                     Id = item.Id,
                     Subject = item.Subject,
-                    Status__c = item.status
+                    Status__c = item.status,
+                    isTimeNeeded__c = item.isTimeNeeded
 
                 );
                 listInsertEvents.add(itrEvent);
@@ -199,6 +201,7 @@ global class WsEvents implements UcbWs {
         public Id Id  {get; set;}
         public String Subject {get; set;}
         public String status {get; set;}
+        public Boolean isTimeNeeded {get; set;}
 
         public myEvent (Event e) {
             AccountId = e.WhatId;
@@ -213,8 +216,7 @@ global class WsEvents implements UcbWs {
             Description = e.Description;
             Subject = e.Subject;
             status = e.Status__c;
-            
-            
+            isTimeNeeded = e.isTimeNeeded__c;
         }
     }
 }

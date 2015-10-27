@@ -65,13 +65,13 @@
         <fullName>EndDateTime</fullName>
     </fields>
     <fields>
+        <fullName>EventSubtype</fullName>
+    </fields>
+    <fields>
         <fullName>IsAllDayEvent</fullName>
     </fields>
     <fields>
         <fullName>IsPrivate</fullName>
-    </fields>
-    <fields>
-        <fullName>IsVisibleInSelfService</fullName>
     </fields>
     <fields>
         <fullName>Location</fullName>

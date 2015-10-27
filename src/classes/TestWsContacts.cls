@@ -8,12 +8,10 @@
 private class TestWsContacts {
 
   static testmethod void doget() {
-
+    TestDataUtility.createNeraTriggerCustomSetting();
     String accountPayload;
     String myObject;
-    
-    CleanupTestData.createNeraTriggerCustomSetting();
-	    
+
     Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
 
     User u = new User(Alias = 'standt', Email = 'pavan.k@neradeveloprttment.org',  EmailEncodingKey = 'UTF-8', LastName = 'Testing', LanguageLocaleKey = 'en_US',  LocaleSidKey = 'en_US', ProfileId = p.Id,
@@ -59,9 +57,7 @@ private class TestWsContacts {
   }
 
   static testmethod void doPost() {
-    
-    CleanupTestData.createNeraTriggerCustomSetting();
-	    
+    TestDataUtility.createNeraTriggerCustomSetting();
     Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
 
     User u = new User(Alias = 'standt', Email = 'pavan.k@neradeveloprttment.org',  EmailEncodingKey = 'UTF-8', LastName = 'Testing', LanguageLocaleKey = 'en_US',  LocaleSidKey = 'en_US', ProfileId = p.Id,
@@ -94,8 +90,7 @@ private class TestWsContacts {
     }
   }
   static testmethod void doPatch() {
-    CleanupTestData.createNeraTriggerCustomSetting();
-	    
+    TestDataUtility.createNeraTriggerCustomSetting();
     Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
 
     User u = new User(Alias = 'standt', Email = 'pavan.k@neradeveloprttment.org',  EmailEncodingKey = 'UTF-8', LastName = 'Testing', LanguageLocaleKey = 'en_US',  LocaleSidKey = 'en_US', ProfileId = p.Id,
@@ -114,9 +109,9 @@ private class TestWsContacts {
       RestRequest req = new RestRequest();
       RestResponse res = new RestResponse();
       req.requestURI = 'https://eu5.salesforce.com/services/apexrest/Contacts/';
-      req.addParameter('userId',u.Id);
-      req.addParameter('contacts',JSON.serialize([select LastName, AccountID, OwnerId from Contact]));
-      req.httpMethod = 'Patch';      
+      req.addParameter('userId', u.Id);
+      req.addParameter('contacts', JSON.serialize([select LastName, AccountID, OwnerId from Contact]));
+      req.httpMethod = 'Patch';
       RestContext.request = req;
       RestContext.response = res;
 
@@ -130,6 +125,7 @@ private class TestWsContacts {
   }
 
   static testmethod void doDelete() {
+    TestDataUtility.createNeraTriggerCustomSetting();
     Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
     User u = new User(Alias = 'standt', Email = 'pavan.k@neradeveloprttment.org',  EmailEncodingKey = 'UTF-8', LastName = 'Testing', LanguageLocaleKey = 'en_US',  LocaleSidKey = 'en_US', ProfileId = p.Id,
                       TimeZoneSidKey = 'America/Los_Angeles', UserName = 'pavan.k@neradeveloprrrent.demodev');
@@ -158,7 +154,7 @@ private class TestWsContacts {
   }
 
   static testmethod void doDummyDelete() {
-
+    TestDataUtility.createNeraTriggerCustomSetting();
     Contact con = new Contact(LastName = 'wain');
     insert con;
 

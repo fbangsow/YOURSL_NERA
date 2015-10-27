@@ -8,10 +8,8 @@
 global class TestWsVisitScore {
   
   static testMethod void testWsVisitScore() {
-
+    TestDataUtility.createNeraTriggerCustomSetting();
     Test.startTest();
-      CleanUpTestData.createNeraTriggerCustomSetting();
-      
       List<Account> listAccount = new List<Account>();
         listAccount.add(new Account(Name='United Gas'));
         listAccount.add(new Account(Name='Yoursl'));

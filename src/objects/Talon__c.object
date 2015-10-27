@@ -72,6 +72,14 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>IsSoldOut__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsSoldOut</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>IsZa__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

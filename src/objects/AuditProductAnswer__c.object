@@ -78,9 +78,37 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>AvailabilityStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>AvailabilityStatus</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Availability__c</fullName>
         <externalId>false</externalId>
         <label>Availability</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CheckFacing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsCheckFacing</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>EANCode__c</fullName>
+        <externalId>false</externalId>
+        <label>EANCode</label>
         <length>200</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -101,19 +129,59 @@
         <fullName>Facing__c</fullName>
         <externalId>false</externalId>
         <label>Facing</label>
-        <length>200</length>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IsMandatoryCooler__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsMandatoryCooler</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>IsSelected__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsSelected</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>PerpendicularFacingValue__c</fullName>
+        <externalId>false</externalId>
+        <label>PerpendicularFacingValue</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PoiId__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>PoiId</label>
+        <referenceTo>UIControl__c</referenceTo>
+        <relationshipLabel>AuditProductAnswers</relationshipLabel>
+        <relationshipName>AuditProductAnswers</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Price__c</fullName>
         <externalId>false</externalId>
         <label>Price</label>
-        <precision>4</precision>
+        <precision>7</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -134,14 +202,48 @@
         <fullName>Quantity__c</fullName>
         <externalId>false</externalId>
         <label>Quantity</label>
-        <precision>4</precision>
+        <precision>7</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ReasonText__c</fullName>
+        <externalId>false</externalId>
+        <label>ReasonText</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ScanStatus__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsScanStatus</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SellingPrice__c</fullName>
+        <externalId>false</externalId>
+        <label>SellingPrice</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <label>AuditProductAnswer</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>AuditProductAnswer Name</label>
         <type>Text</type>

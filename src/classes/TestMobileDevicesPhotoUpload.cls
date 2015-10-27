@@ -4,12 +4,13 @@
 @Creation date  :15/06/2015
 @Reference      :
 */
-@IsTest
+@isTest
 private class TestMobileDevicesPhotoUpload {
 
     static MobileDevice__c objmobileDevice;
     static Attachment attach;
     static Attachment attach1;
+
     private static void testDataForMobileDevice(String deviceName, Integer height, Integer width) {
         objmobileDevice = new MobileDevice__c(Name = deviceName, Height__c = height, Width__c = width);
         insert objmobileDevice;
@@ -19,6 +20,7 @@ private class TestMobileDevicesPhotoUpload {
         insert attach;
     }
     private static  void testData() {
+        TestDataUtility.createNeraTriggerCustomSetting();
         testDataForMobileDevice('Samsung', 640, 907);
         testDataForAttachment('iPadAir2vector.svg', 'Unit Test Attachment Body');
     }
@@ -55,6 +57,6 @@ private class TestMobileDevicesPhotoUpload {
         conEctr.Uploadfile = Blob.valueOf('Unit Test Attachment Body1');
         conEctr.attachfilename = 'iPadAir3_mini_vector1.svg';
         conEctr.toggle();
-        System.assertEquals(false,conEctr.displaying );
+        System.assertEquals(false, conEctr.displaying );
     }
 }

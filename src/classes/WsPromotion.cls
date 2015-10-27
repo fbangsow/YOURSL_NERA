@@ -44,11 +44,13 @@ global class WsPromotion implements UcbWs {
         Map<Id,Set<String>> mapPromotionPBEntries = getPromotionPriceBookEntry(mapAccountUniquePromotions);
         Map<Id,PriceBookEntry> mapPriceBookEntry = getPriceBookEntries(mapPromotionPBEntries);
         Map<Id,Map<String,ProductGroup>> mapProductProductGroups = getProductIdGroups(mapPriceBookEntry);
+        
         List<AccountWrapper> listDataset = getAccountPromotions(listAccounts,
                               mapAccountUniquePromotions,
                               mapPromotionPBEntries,
                               mapPriceBookEntry,
                               mapProductProductGroups,mapPromotions);
+
 
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(listDataset));
         RestContext.response.addHeader('size', String.valueOf(listDataset.Size()));
@@ -183,8 +185,10 @@ global class WsPromotion implements UcbWs {
         setPromotionIds.add(str);
       }
     }
+
     Map<Id,Promotion__c> mapPromotions = new Map<Id,Promotion__c>([SELECT Id,Name,
-                                      StartDate__c,EndDate__c,Image__c  
+                                      StartDate__c,EndDate__c,Image__c,Description__c,AttachmentId__c,SellingValidityEndDate__c,SellingValidityStartDate__c
+                                       ,ActionValidityEndDate__c,ActionValidityStartDate__c,AdvertisingMaterial__c,PromotionType__c
                                     FROM Promotion__c 
                                     WHERE Id IN: setPromotionIds]);
     return mapPromotions;
@@ -230,9 +234,9 @@ global class WsPromotion implements UcbWs {
     }
     Map<Id, PricebookEntry> mapPriceBookEntry = new Map<Id, PricebookEntry>([SELECT Id, Name,
                                             IsActive,Product2Id,
-                                            ProductCode,UnitPrice, 
+                                            ProductCode,UnitPrice,Description__c,
                                             UseStandardPrice,
-                                            Pricebook2Id,Can__c  
+                                            Pricebook2Id,IsCan__c  
                                         FROM PricebookEntry 
                                         WHERE Id IN: setPBEntries]);
     return mapPriceBookEntry;
@@ -291,11 +295,31 @@ global class WsPromotion implements UcbWs {
                               Map<Id,Map<String,ProductGroup>> productProductGroups,
                               Map<Id,Promotion__c> idPromotions){
     List<AccountWrapper> listAccountPromotions = new List<AccountWrapper>();
+
+    List<String> attIds = new List<String>();
+
+    for(Promotion__c promo : idPromotions.values()){
+      attIds.add(promo.Image__c);
+    } 
     
+    
+    Map<Id,List<Id>> mapaprentatt = new Map<Id,List<Id>>();
+
+    for(Attachment att:[SELECT Id,Name,body,parentId FROM Attachment WHERE parentId IN : idPromotions.keySet() AND Id NOT IN:attIds]){
+      IF(att.parentId!=NULL){
+          IF(!mapaprentatt.containskey(att.parentId)){
+              mapaprentatt.Put(att.parentId,new List<Id>());
+          }
+          mapaprentatt.get(att.parentId).add(att.id);        
+      }
+    }
+
+
     for(Account acc : lstAccounts){
       AccountWrapper accWrap = new AccountWrapper();
       accWrap.accountId = acc.id;
       accWrap.promotions = new List<PromotionWrapper>();
+
       Set<String> setPromotions = mapUniAccountPromotions.get(acc.id);
       for(String proStr : setPromotions){
         PromotionWrapper proWrap = new PromotionWrapper();
@@ -303,10 +327,19 @@ global class WsPromotion implements UcbWs {
         proWrap.promotionId = proStr;
         proWrap.startDate = idPromotions.get(proStr).StartDate__c;
         proWrap.endDate = idPromotions.get(proStr).EndDate__c;
+        proWrap.Description = idPromotions.get(proStr).Description__c;
         proWrap.image = idPromotions.get(proStr).Image__c;
+        proWrap.sellingValidityEndDate = idPromotions.get(proStr).SellingValidityEndDate__c;
+        proWrap.sellingValidityStartDate = idPromotions.get(proStr).SellingValidityStartDate__c;
+        proWrap.actionValidityEndDate = idPromotions.get(proStr).ActionValidityEndDate__c;
+        proWrap.actionValidityStartDate = idPromotions.get(proStr).ActionValidityStartDate__c;
+        proWrap.advertisingMaterial = idPromotions.get(proStr).AdvertisingMaterial__c;
+        proWrap.promotionType = idPromotions.get(proStr).PromotionType__c;
+
+        prowrap.pdfattid = mapaprentatt.get(proStr);
+
         proWrap.productGroups = new List<GroupWrapper>();
         Map<String,GroupWrapper> mapGroupWrapper = new Map<String,GroupWrapper>();
-
         Set<String> setPBentries = promotionPBEntries.get(proStr);
         for(String pBEntrystr : setPBentries){
           if(priceBookEntry.containskey(pBEntrystr)){
@@ -337,8 +370,10 @@ global class WsPromotion implements UcbWs {
             }
           }
         }
-        proWrap.productGroups = mapGroupWrapper.values();
+        proWrap.productGroups = mapGroupWrapper.values();                
+
         accWrap.promotions.add(proWrap);
+
       }
       listAccountPromotions.add(accWrap);
     }
@@ -381,6 +416,14 @@ global class WsPromotion implements UcbWs {
     public Date startDate{set;get;}
     public Date endDate{set; get;}
     public String image{get; set;}
+    public String Description {get; set;}
+    public Date actionValidityStartDate {get; set;}
+    public Date actionValidityEndDate {get; set;}
+    public Date sellingValidityStartDate {get; set;}
+    public Date sellingValidityEndDate {get; set;}
+    public String promotionType {get; set;}
+    public String advertisingMaterial {get; set;}
+    public List<Id> pdfattid;
     public List<GroupWrapper> productGroups{get; set;}
   }
   
@@ -403,17 +446,19 @@ global class WsPromotion implements UcbWs {
         public String useStandardPrice {get; set;}
         public String priceBook2Id {get; set;}
         public String can{get; set;}
+        Public String Description {get; set;}
         public ProductsWrapper(PricebookEntry myPriceBookentry) {
 
             this.priceBookEntryId = myPriceBookentry.Id;
             this.name = myPriceBookentry.Name;
+            this.Description = myPriceBookentry.Description__c;
             this.isActive = String.valueOf(myPriceBookentry.IsActive);
             this.product2Id = myPriceBookentry.Product2Id;
             this.productCode = myPriceBookentry.ProductCode;
             this.unitPrice = String.valueOf(myPriceBookentry.UnitPrice);
             this.useStandardPrice = String.valueOf(myPriceBookentry.UseStandardPrice);
             this.priceBook2Id = myPriceBookentry.Pricebook2Id;
-            this.can = String.valueof(myPriceBookentry.Can__c);
+            this.can = String.valueof(myPriceBookentry.IsCan__c);
         }
   }
 }

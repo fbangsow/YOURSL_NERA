@@ -1,3 +1,9 @@
+/*
+* @author :Ravindra;
+* @Company: YOUR SL  
+* @Created Date: 26.05.2015 16:11
+* @Reference:
+*/
 public with sharing class EctrPageConfigcPhotoUpload {
 
         public Boolean displaying {get;set;}

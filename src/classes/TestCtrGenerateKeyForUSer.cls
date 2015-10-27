@@ -9,6 +9,8 @@
 private class TestCtrGenerateKeyForUSer {
 	
 	static testmethod void generateKeyForUSer () {
+		
+		TestDataUtility.createNeraTriggerCustomSetting();
 		Profile p=[SELECT id
 				   FROM Profile
 				   WHERE Name='Standard User'];

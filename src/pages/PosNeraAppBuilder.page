@@ -544,20 +544,28 @@ background-repeat: no-repeat;
              });
 
              var startX = 0,
-                 startY = 0,
-                 x = event.pageX + "px",
+                 startY = 0;
+                 if(typeof(event)!=="undefined")
+                 {
+                  x = event.pageX + "px";
                  y = event.pageY + "px";
 
              elem.on('mousedown', function(event) {
+                var eventgbl=event;
                  event.preventDefault();
+                 //alert(x);
                  startX = (event.pageX - x) || 0;
                  startY = (event.pageY - y) || 0;
                  $document.on('mousemove', mousemove);
                  $document.on('mouseup', mouseup);
              });
+                }
+               
+
+
 
              function mousemove(event) {
-
+     //alert(event.pageX);
                  y = event.pageY - startY;
                  x = event.pageX - startX;
 
@@ -780,6 +788,9 @@ background-repeat: no-repeat;
                          var data = "";
                          var resultdata = htmlDecode(result);
                          glbldatapagecon = JSON.parse(resultdata);
+
+                         if(typeof(glbldatapagecon.UIControls__r)!=="undefined")
+                         {
                          angular.forEach(glbldatapagecon.UIControls__r.records, function(value, key) {
                              var dateceated = value.CreatedDate;
                              datecreated = dateceated.replace(/[-,:\s]/g, ".");
@@ -794,7 +805,8 @@ background-repeat: no-repeat;
 
                              data = data + "<div class='navbar-default navbar-brand backgroundFile' id='" + value.Id + "' value='" + value.Name + "' ng-click='bindingpoi($event)'>" + value.Name + "<br/><small>" + dateformate + " - " + value.CreatedBy.Name + "</small><div class='checkbox2'></div></div>";
                              });
-
+                     }
+             
 
 
                          deferred.resolve(data);
@@ -824,6 +836,8 @@ background-repeat: no-repeat;
                          glbldatapageconicon = JSON.parse(resultdata);
                       
                          data="<div class='imgdata2' style='width:87%;left:6.5%;top:7%;' ng-style='backgrundimgdata'></div><div style='border:1px solid #43424E;width:6.5%;height:100%;background-color:#43424E;' class='leftbar'></div><div style='position:absolute;top:0px;left:0px;border:1px solid #2699D8;width:100%;height:7%;background-color:#2699D8;'></div><div style='position:absolute;top:0px;right:0px;border:1px solid #43424E;width:6.5%;height:100%;background-color:#43424E'></div>";
+                           if(typeof(glbldatapagecon.UIControls__r)!=="undefined")
+                         {
                          angular.forEach(glbldatapageconicon.UIControls__r.records, function(value, key) {
                              var dateceated = value.CreatedDate;
                              datecreated = dateceated.replace(/[-,:\s]/g, ".");
@@ -841,6 +855,7 @@ background-repeat: no-repeat;
                              data = data + "<div ng-click='bindingpoi($event)'><div style='position:absolute; background-image : url(/servlet/servlet.FileDownload?file=" + value.PoiIconImageId__c + "); background-repeat: no-repeat; background-size: 100% 100%; left:" + xcordinatebndg + "px;top:" +ycordinatebndg  + "px;width:"+wdth+"px;height:"+hght+"px;' class='circleBase type1'  id=" + value.Id + " value='" + value.Name + "' ng-Draggable='dragOptions' ng-mouseleave='uiconxycoor($event)'></div></div>";
 
                          });
+}
                            data=data+"";
                          deferred.resolve(data);
                      } else {
@@ -904,9 +919,32 @@ background-repeat: no-repeat;
          return deferred.promise;
      }
  }]);
- 
+  
+   myapp.factory('PageConfigTypeId', ['$q', '$rootScope', function($q, $rootScope) {
+     return function() {
+         var deferred = $q.defer();
+         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CtrlPOSAppBuilder.getPageConfigTypeId}',
+             function(result, event) {
+                 $rootScope.$apply(function() {
+                     if (event.status) {
+                         var resultdata = htmlDecode(result);
+                       dataforresult = JSON.parse(resultdata);
+                       PageConfigTypeId1 = dataforresult[0].Id;
+                         deferred.resolve(dataforresult);
+                     } else {
+                         deferred.reject(event);
+                     }
+                 });
+             }, {
+                 buffer: true,
+                 escape: true,
+                 timeout: 30000
+             });
+         return deferred.promise;
+     }
+ }]);
 
-        var PageConfigTypeId;
+        
  myapp.factory('serviceforgetaccountchange', ['$q', '$rootScope', function($q, $rootScope) {
      return function(appsettingid) {
          var deferred = $q.defer();
@@ -921,7 +959,7 @@ background-repeat: no-repeat;
                      angular.forEach(a, function(key1, value1) {
                          if (typeof key1.PageConfigs__r !== "undefined") {
                              angular.forEach(key1.PageConfigs__r.records, function(key, value) {
-                                 PageConfigTypeId = key.PageConfigTypeId__c;
+                                // PageConfigTypeId = key.PageConfigTypeId__c;
                                  var dateceated = key.CreatedDate;
                                  datecreated = dateceated.replace(/[-,:\s]/g, ".");
                                  datecreated = datecreated.match(/.{1,10}/g);
@@ -957,7 +995,7 @@ background-repeat: no-repeat;
 
 var scalewidt=0;
 var scalehght=0;
- myapp.controller("mycntrlr", function($scope, $compile, serviceforgetaccountchange, Mobiledeviceservice, poiquestionservice, pageconfiguiconservice, AuditQuestionTypeservice, pageconfiguiconiconservice, getPOITypeListservice, getPOITypeattnameservice, businessprocessservice,poiHeaderServies,uicontroltypeid) {
+ myapp.controller("mycntrlr", function($scope, $compile, serviceforgetaccountchange, Mobiledeviceservice, poiquestionservice, pageconfiguiconservice, AuditQuestionTypeservice, pageconfiguiconiconservice, getPOITypeListservice, getPOITypeattnameservice, businessprocessservice,poiHeaderServies,uicontroltypeid,PageConfigTypeId) {
     $scope.disablenew=0;
  
      $scope.btninpt = " <div class='panel-heading panel-border background settingimage'><span class='paneltitle title colortitle'>Survey Execution<br/><small class='colortitle'>Builder 1.0 </small></span><div class='widget-menu pull-right'></div></div><div class='panel newpos'><div class='panel-heading'><i ng-click='uploaddivshow()' class='raduisbtn  backgroundAddView '></i><span class='paneltitle paneltitleview'>New View</span></div></div><div class='panel panel-info panel-border brdernone'  style='margin-bottom:0px;'><div class='panel-heading bordernne' ><span class='paneltitle'>See all Views</span><div class='widget-menu pull-right'></div></div></div>";
@@ -969,8 +1007,13 @@ var scalehght=0;
 
      }
      $scope.mobiledevice = Mobiledeviceservice();
-     $scope.qustntype = AuditQuestionTypeservice();
+     //$scope.qustntype = AuditQuestionTypeservice();
      $scope.poitype = getPOITypeListservice();
+     PageConfigTypeId().then(function(resultdata){
+         $scope.uipostypeid = resultdata;
+         $scope.uipostypeidforserve = resultdata[0].Id;
+
+         });
 
      $scope.tablehide = true;
      $scope.leftdivshow = true;
@@ -1144,6 +1187,9 @@ var scalehght=0;
          $scope.pageconuicontrollers = pageconfiguiconservice($scope.pageConfigID);
          $scope.pageconuicontrollersion = pageconfiguiconiconservice($scope.pageConfigID);
          $scope.uitypeid = uicontroltypeid();
+
+         
+
          
 angular.element(document.getElementsByClassName("imgdata2")).attr("style","background-image:URL('/servlet/servlet.FileDownload?file='" + $scope.splitdata[0] + "')");
 
@@ -1163,7 +1209,15 @@ angular.element(document.getElementsByClassName("imgdata2")).attr("style","backg
          $scope.pageconName = $scope.pageconNamesplit[0];
          $scope.posattname = '';
          pageconfiguiconiconservice($scope.pageConfigID).then(function(dataforpageconfg) {
+            if(typeof(glbldatapageconicon.Attachments)!=="undefined")
+            {
          angular.element(document.getElementsByClassName("wdthbrdrrdus")).val(glbldatapageconicon.Attachments.records[0].Name)
+         }
+         else
+         {
+angular.element(document.getElementsByClassName("wdthbrdrrdus")).val(" ");
+
+         }
          }); 
    var topfrlctn=$(".imagefortablet").position().top;
    var hghtlctn=$(".hghtfrcal").height();
@@ -1193,9 +1247,11 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
             poiquestionservice(a.target.id).then(function(resultdata){
             $scope.AuditQuestions = resultdata;
             $scope.poitypesavenew = resultdata.POIType__r.Id;
+             $scope.bindingquestiontype(resultdata.POIType__r.Name);
+
             getPOITypeattnameservice($scope.poitypesavenew).then(function(resultdatafortype){
             angular.element(document.getElementsByClassName("textareaheader")).val(resultdatafortype[0].Attachments.records[0].Name);
-            })
+                       })
          });
       
          $scope.idoff = angular.element(document.getElementsByClassName("backgroundsave1")).attr("id");
@@ -1214,12 +1270,18 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
           });
 
          poiHeaderServies($scope.uiconid).then(function(data) {
+
+            if(data!="")
+            {
+                 if(typeof(data[0].Attachments)!=="undefined")
+            {
           angular.element(document.getElementsByClassName("txtxareaiamges")).val(data[0].Attachments.records[0].Name)
- 
+            }
+        }
          });
          angular.element(document.getElementsByClassName("backgroundAddnew")).attr("disabled",false);
          //angular.element(document.getElementsByClassName("backgroundfilter")).attr("disabled",false);
-         $scope.qustntype = AuditQuestionTypeservice();
+        // $scope.qustntype = AuditQuestionTypeservice();
          $scope.poitype = getPOITypeListservice();
          $scope.title = a.target.attributes.value.value;
          $scope.desciptionofpoi= a.target.attributes.value.value;
@@ -1247,7 +1309,71 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
            
        
      }
+$scope.bindingquestiontype=function(event){
+ var arraytostore=[];
+         AuditQuestionTypeservice().then(function(resultofjson){
+           
+                angular.forEach(resultofjson,function(value,index){
+                   var idx = resultofjson.length-1;
+                   
+                     if(event=="Cooler")
+            {
+                    if(value.Name!="Number" && value.Name!="Cooler" && value.Name!="Text" && value.Name!="YesNoCheckBox")
+                    {
+                 
+                      
+                    }
+                    else
+                    {
+                         arraytostore.push(value);
+                    }
+                }
+                  if(event=="Beverage")
+            {
+                    if(value.Name=="Beverage")
+                    {
+                       arraytostore.push(value);
+                       //resultofjson.splice(idx,index);bindingpoi
+                      
+                    }
+                   
+                }
+                 if(event=="SecondaryPlacement")
+            {
+                    if(value.Name=="MultiSelect")
+                    {
+                       arraytostore.push(value);
+                       //resultofjson.splice(idx,index);
+                      
+                    }
+                   
+                }
+                 if(event=="Generic")
+            {
+                    if(value.Name!="Slider" && value.Name!="YesNoButton" && value.Name!="Text" && value.Name!="YesNoCheckBox")
+                    {
+               
+                       //resultofjson.splice(idx,index);
+                      
+                    }
+                    else
+                    {
+                         arraytostore.push(value);
+                    }
+                   
+                }
+                  //resultofjson.splice(index,1);
+                  //arraytostore.push(value);
 
+                })
+resultofjson=arraytostore;
+            
+
+$scope.qustntype = resultofjson;
+
+          });
+
+}
      $scope.selectdevice = function(a) {
 
          $scope.selectdevicename = a.target.innerHTML;
@@ -1275,6 +1401,18 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
          reader.readAsDataURL(element.files[0]);
          $scope.data = element.files[0];
          $scope.posattname = $scope.data.name.split(".");
+            var topfrlctn=$(".imagefortablet").position().top;
+   var hghtlctn=$(".hghtfrcal").height();
+
+   
+   var widthfrdiv=$(".imgdata5").height()-(45+(hghtlctn*2)+topfrlctn);
+   if($(window).width()<980)
+   {
+   var widthfrdiv=$(".imgdata5").height()-(15+(hghtlctn*2)+topfrlctn);
+   }
+   
+var total=topfrlctn+hghtlctn;
+$(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");  
 
      }
 
@@ -1316,7 +1454,73 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
          angular.element(event.target).parent().parent().parent().find("input").attr("id", event.target.id);
          $scope.poitypesavenew = angular.element(event.target).parent().parent().parent().parent().find('.poitype').attr("id");
          $scope.poitypeattname = getPOITypeattnameservice($scope.poitypesavenew);
-         angular.element(document.getElementsByClassName("textareaheader")).val($scope.poitypeattname  [0].Attachments.records[0].Name);
+         //$scope
+         var arraytostore=[];
+         AuditQuestionTypeservice().then(function(resultofjson){
+           
+                angular.forEach(resultofjson,function(value,index){
+                   var idx = resultofjson.length-1;
+                   
+                     if(event.target.innerHTML=="Cooler")
+            {
+                    if(value.Name!="Number" && value.Name!="Cooler" && value.Name!="Text" && value.Name!="YesNoCheckBox")
+                    {
+                 
+                      
+                    }
+                    else
+                    {
+                         arraytostore.push(value);
+                    }
+                }
+                  if(event.target.innerHTML=="Beverage")
+            {
+                    if(value.Name=="Beverage")
+                    {
+                       arraytostore.push(value);
+                       //resultofjson.splice(idx,index);bindingpoi
+                      
+                    }
+                   
+                }
+                 if(event.target.innerHTML=="SecondaryPlacement")
+            {
+                    if(value.Name=="MultiSelect")
+                    {
+                       arraytostore.push(value);
+                       //resultofjson.splice(idx,index);
+                      
+                    }
+                   
+                }
+                 if(event.target.innerHTML=="Generic")
+            {
+                    if(value.Name!="Slider" && value.Name!="YesNoButton" && value.Name!="Text" && value.Name!="YesNoCheckBox")
+                    {
+               
+                       //resultofjson.splice(idx,index);
+                      
+                    }
+                    else
+                    {
+                         arraytostore.push(value);
+                    }
+                   
+                }
+                  //resultofjson.splice(index,1);
+                  //arraytostore.push(value);
+
+                })
+resultofjson=arraytostore;
+            
+
+$scope.qustntype = resultofjson;
+
+          });
+        // $scope.qustntype = 
+
+         angular.element(document.getElementsByClassName("textareaheader")).val($scope.poitypeattname[0].Attachments.records[0].Name);
+        
 
      }
 
@@ -1370,14 +1574,13 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
          $scope.blobdatasplit = $scope.blobdata.split("(");
          $scope.splitdataforurl = $scope.blobdatasplit[1].split(")");
          $scope.urlforbolb = $scope.splitdataforurl[0].split(",");
-
          $scope.maindataforsave = [{
              "Name": $scope.pageconName,
              "Blobdata": $scope.urlforbolb[1],
              "pageConfigID": $scope.pageConfigID,
              "mobiledeviceid": $scope.selectdeviceid,
              "posattname": $scope.posattname[0],
-             "pageConfigTypeId": PageConfigTypeId,
+             "pageConfigTypeId": $scope.uipostypeidforserve,
              "appsettingid": $scope.selectdeviceid,
          }];
 
@@ -1415,6 +1618,7 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
 
          });
          var jsondatafordata = JSON.stringify(arraeyofxsis);
+
          Visualforce.remoting.Manager.invokeAction(
              '{!$RemoteAction.CtrlPOSAppBuilder.uiconxyupdate}', jsondatafordata,
              function(result, event) {}, {
@@ -1571,6 +1775,7 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
          $("#myfilter").attr("style", "display:none;");
          $(".removediv").remove();
            $scope.disablenew=0;
+              angular.element(document.getElementsByClassName("clickedpoi")).removeClass("clickedpoi");  
      }
 
      $scope.openfilter = function() {
@@ -1681,8 +1886,10 @@ $(".imgdata").attr("style","top:"+total+"px;height:"+widthfrdiv+"px;");
          $scope.pageconuicontrollers = '';
          $scope.pageconName = '';
          $scope.posattname = '';
+         //$scope.pageConfigID ='';
          angular.element(document.getElementsByClassName("savepos")).attr("id", "");
          angular.element(document.getElementsByClassName("checkbox1")).css('background-color', '#999999');
+          angular.element(document.getElementsByClassName("wdthbrdrrdus")).val("");
      }
 
  });

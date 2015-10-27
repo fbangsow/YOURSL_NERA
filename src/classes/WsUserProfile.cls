@@ -39,6 +39,7 @@ global class WsUserProfile {
 
 }
 public class UserProfile {
+    
     public String name;
     public Blob image;
     public String mapType;

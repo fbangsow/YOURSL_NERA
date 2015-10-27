@@ -19,7 +19,7 @@
                     </apex:pageblocksection>
                     <apex:pageblocksection columns="1" rendered="{! !displaying}">
                         <p>Use the button to below to select a new file and then press "Save"</p>
-                        <apex:inputFile value="{!uploadPicFile}"  fileName="{!attachfilename}"/>
+                        <apex:inputFile value="{!uploadPicFile}"  fileName="{!attachfilename}"  accept="image/jpeg, image/png, image/gif, image/jpg, image/svg"/>
                         <p>Or press Cancel to return.</p>
                     </apex:pageBlockSection>
             </apex:pageBlock>

@@ -4,15 +4,16 @@
 @Creation date  :15/06/2015
 @Reference      :
 */
-@IsTest
-private class TestEctrUserProfilePhotoUpload {
+@isTest
+private class TestEctrUserProfilePhotoUpload{
 
     static Profile profle;
     static User usr;
     static UserProfile__c objUserProfile;
     static Attachment attach;
     static Attachment attach1;
-    private static void testDataForProfile() {
+
+    private static void testDataForProfile(){
         profle = [SELECT id
                   FROM Profile
                   WHERE Name = 'Standard User'];
@@ -32,6 +33,7 @@ private class TestEctrUserProfilePhotoUpload {
         insert attach;
     }
     private static  void testData() {
+        TestDataUtility.createNeraTriggerCustomSetting();
         testDataForProfile();
         testDataForUser('jyothi.m@neradevelopment.org', 'jmora', 'jyothi.m@neradevelopment.org', 'ISO-8859-1', 'Moravapalli', 'de',
                         'Europe/Berlin', 'de');
@@ -40,7 +42,7 @@ private class TestEctrUserProfilePhotoUpload {
     }
 
     //Method for testing Save functionality
-    static testmethod void userProfilePhotoUpload() {
+    static testmethod void userProfilePhotoUpload(){
         testData();
         ApexPages.StandardController sc = new ApexPages.StandardController(objUserProfile);
         EctrUserProfilePhotoUpload conEctr = new EctrUserProfilePhotoUpload(sc);
@@ -54,7 +56,7 @@ private class TestEctrUserProfilePhotoUpload {
     }
 
     //Method for testing else part without giving attachfilename
-    static testmethod  void userProfilePhotoUploadElse() {
+    static testmethod  void userProfilePhotoUploadElse(){
         testData();
         ApexPages.StandardController sc = new ApexPages.StandardController(objUserProfile);
         EctrUserProfilePhotoUpload conEctr = new EctrUserProfilePhotoUpload(sc);
@@ -64,7 +66,7 @@ private class TestEctrUserProfilePhotoUpload {
     }
 
     //Method for testing Toggle functionality
-    static testmethod  void userProfilePhotoUploadToggle() {
+    static testmethod  void userProfilePhotoUploadToggle(){
         testData();
         ApexPages.StandardController sc = new ApexPages.StandardController(objUserProfile);
         EctrUserProfilePhotoUpload conEctr = new EctrUserProfilePhotoUpload(sc);

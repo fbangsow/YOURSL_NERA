@@ -1,8 +1,16 @@
+/*
+@Company        :Your SL
+@Author         :Jyothi M
+@Creation date  :29/07/2015
+@Reference      :
+*/
 @isTest
-private class TestCtrDymanicAppBuilder {
+private class TestCtrDymanicAppBuilder{
 
 	static testmethod void dynamicAppBuilder() {
-	    CleanupTestData.createNeraTriggerCustomSetting();
+
+		TestDataUtility.createNeraTriggerCustomSetting();
+		
 		MobileDevice__c objmobileDevice = new MobileDevice__c(Name = 'Samsung', height__c = 4, width__c = 4, XBezel__c = 90.0, YBezel__c = 34.0, XFrame__c = 727.0, YFrame__c = 563.0 );
 		insert objmobileDevice;
 		Attachment attach1 = new Attachment (Name = 'iPadAir2vector.svg', body = Blob.valueOf('attachBody'), parentId = objmobileDevice.Id);
@@ -78,7 +86,7 @@ private class TestCtrDymanicAppBuilder {
 
 		objCtrDymanicAppBuilder.customObjects = 'PageConfig__c';
 		//This method for getting a custom object related fields by passsing custom object
-		objCtrDymanicAppBuilder.getCustomObjectFields();
+	//	objCtrDymanicAppBuilder.getCustomObjectFields();
 
 		//This method for returning a custom object related fields
 		objCtrDymanicAppBuilder.getCusObjectFields();

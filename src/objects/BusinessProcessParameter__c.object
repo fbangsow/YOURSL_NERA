@@ -77,7 +77,7 @@
         <fullName>IsPotential__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Is Potential</label>
+        <label>IsPotential</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -99,6 +99,16 @@
         <label>Value</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+	<fields>
+        <fullName>OldId__c</fullName>
+        <externalId>false</externalId>
+        <label>OldId</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Values__c</fullName>

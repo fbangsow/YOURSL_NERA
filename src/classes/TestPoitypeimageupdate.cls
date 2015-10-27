@@ -1,16 +1,17 @@
 /*
 @Company        :Your SL
-@Author         :M.Jyothi
+@Author         :Jyothi.M
 @Creation date  :08/09/2015
 @Reference      :
 */
+
 
 @isTest
 public class TestPoitypeimageupdate {
 
     //This method checks whether PoiIconImageId__c field of UICOntroll object upadated (with AttachmentId of POIType object)or not after updating the image in POIType object
     static testmethod void poiTypeImageUpdat(){
-    
+    TestDataUtility.createNeraTriggerCustomSetting();
     POIType__c objPOIType=new POIType__c(Name='Cooler');
       insert objPOIType;
        Attachment attach = new Attachment(Name = 'iPadAir2vector', body = Blob.valueOf('attachBody'), parentId = objPOIType.id);
@@ -38,7 +39,7 @@ public class TestPoitypeimageupdate {
         insert attach1;
          objPOIType.AttachmentId__c=attach1 .Id;
         update objPOIType;
-        UIControl__c objUIControl1=[SELECT Id,PoiIconImageId__c FROM UIControl__c ];
+        UIControl__c objUIControl1=[SELECT Id,PoiIconImageId__c FROM UIControl__c WHERE id=:objUIControl.Id];
         
         system.assertEquals(objPOIType.AttachmentId__c,objUIControl1.PoiIconImageId__c );
         

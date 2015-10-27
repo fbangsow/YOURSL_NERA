@@ -13,7 +13,7 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
-        <actionName>Delete</actionName>        
+        <actionName>Delete</actionName>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -53,6 +53,16 @@
     <enableReports>false</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>ExternalId__c</fullName>
+        <externalId>true</externalId>
+        <label>ExternalId</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <fields>
         <fullName>OrderType__c</fullName>
         <externalId>false</externalId>
@@ -122,6 +132,16 @@
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>ProductId__c</fullName>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Quantity__c</fullName>
         <externalId>false</externalId>
         <label>Quantity</label>
@@ -131,6 +151,22 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ThirdPartyOrderComment__c</fullName>
+        <externalId>false</externalId>
+        <label>ThirdPartyOrderComment</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>ThirdPartyOrderStatus__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>ThirdPartyOrderStatus</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>UseStandardPrice__c</fullName>
